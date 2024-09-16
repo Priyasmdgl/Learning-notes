@@ -1,0 +1,16 @@
+GraphQL:
+-------
+Query language for api
+Only used for post request which fetches all the resources
+endpoint doesn't differ
+we can get the desired response by a single post request
+operations:
+query-to fetch
+mutation- to create,update,delete
+subscription-to check the response for create,update,delete request
+https://hasura.io/learn/graphql/graphiql  -->GrpahQL site
+
+In postman we can run graphql query by selecting graphql in body and give the query
+Also we can do it by new->Graphql here we can give only the url and run the query
+
+For a query we can set limit and can use where condition
