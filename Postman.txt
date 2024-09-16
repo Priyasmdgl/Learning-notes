@@ -1,0 +1,98 @@
+API testing using Postman:
+
+Client: place where we are trying to access the request/application
+server: place where the actual application is available
+API: acts as an interface between two applications where it sends the request and receives the response
+API testing : testing the business logic of an application without an UI. i.e, before deploying it as a web application over the internet
+web services: services which are available over the internet. all webservices are api 
+http: data is transferred as it is
+https: data is transfered in encryped format and it is secured one
+it follows soap and rest protocol
+http://google.com/pages --url
+http://google.com --domain
+pages --endpoint/urn/params(location)
+?after this --query param(identifies the resource)
+payload:data we send along with the request(input data)
+Workspace: contains all collections,tasks,files we run in postman
+Collection: contains all the requests which we perform with an api
+create,delete,run,export,duplicate
+http requests:
+get,post,put,patch,delete,head
+status codes:
+200-ok  201-created  202-accepted  203-non authoritative info  204-no content
+400-bad request  401-unauthorized  403-forbidden  404-not found  409-conflict
+500-internal server error  501-not implemented  502-bad gateway  503-service unavailable  504-gateway timeout  599-network timeout
+
+To create our own api:
+install nodejs and it will install npm
+install json server npm install -g json-server
+create a json file 
+then run json-server json filename -->this will give the url of our own api which we created as a json file
+JSON- data format for communication between client and server
+it has key value pairs
+key should be always in double quotes
+in value only string should be in double quotes
+array should be in square brackets
+what we test/validate in api:
+status code,header,cookies,response time,response body
+
+Chai Assertion(written in javascript)
+pm.test functions
+pm-library
+pm.test("test name", function() / () =>
+{assertion;}
+);
+
+Pre request script- runs before the request is validated
+test script/post response -runs after getting the response
+
+variables: to store common data which is used in most of the requests
+local(request level which can be defined in pre-request script)
+global(workspace level)
+environment(workspace level but need to switch to that particular env)
+collection(collection level for all the requests inside it)
+data(for external files like csv,txt,json,..)
+we can also set(pre-request) and get,unset(post response) variables by defining in scripts
+
+API chaining:
+some part of the response of one api will be the request of another api
+we need to define it in post response script and use it in another request as {{}}
+
+Swagger:for documenting and exploring api
+Postman:for validating and testing api
+curl:client url
+we can also create documents for our collections in postman using the view documentation option
+It will create a documentation and we can publish it
+
+Documentations:
+---------------
+https://documenter.getpostman.com/view/37621942/2sAXqnejMo
+
+opencart project:
+-----------------
+download xampp
+create an api key and use it in postman
+cart module
+-----------
+set the ip and url as collection variable
+url-http://{{ip}}/opencart/upload/index.php?route=
+token creation-in post request give {{}}api/login and in body give the username and key.it will generate the token
+add to cart- declare the product_id and quantity in cv and mention it in body
+get cart content-enter the product_id in body
+edit cart content-declare cart id in cv and declare key(cart_id)and quantity in body 
+remove product from cart-declare key(cart_id)in body
+
+Running the collection through cmd prompt:
+------------------------------------------
+install nodejs and it will install npm
+npm install -g newman
+npm install -g newman-reporter-html
+newman run api collection from postman
+newman run api collection from postman -r htmlxtra(for html report)
+
+jenkins:
+--------
+create a project and give the cmd in build step
+from git: give the git url and give the cmd in build step
+
+

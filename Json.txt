@@ -1,0 +1,48 @@
+JSON:
+-----
+Java Script Object Notation
+syntax for storing and exchanging data
+extended from javascript and it is human readable language
+extension is .json and media type is application/json
+Data types:
+-----------
+number,string,boolean,null,object,array
+string:
+-------
+{
+"name":"Priya"
+}
+numbers:
+--------
+{
+"age":26
+}
+object:
+-------
+{
+"students":
+{
+"name":"Priya",
+"age":26,
+"city":"Dindigul"
+}
+}
+array:
+------
+{
+"students":["Priya","Raghav","Jayanthi"]
+}
+boolean:
+--------
+{
+"present":true
+}
+null:
+-----
+{
+"last_name":null
+}
+
+data will be in key value pairs and should be separated by comma
+{}-objects
+[]-arrays

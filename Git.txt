@@ -1,0 +1,86 @@
+
+Create a folder and some files to it and open git bash from that location
+git init
+git add .
+git commit -m ""
+git status,log
+
+Git diff:
+----------
+If we have modified the file it will be available only in the working dir and not in staging area
+To see the diff in the file content bet those two(working and staging) we need to run git diff filename
+To see the diff in the file content bet those two(working and local repo) we need to run git diff HEAD filename
+To see the diff in the file content bet staging and local run git add . and run git diff --staged HEAD filename
+To see the diff in the file content bet specific commit and working run git log --oneline and run git diff 48174ee filename
+To see the diff in the file content bet specific commit and staging run git diff --staged 48174ee
+To see the diff in the file content bet 2 specific commit run git diff c1 c2 filename
+To see the diff in the file content bet 2 branches run git diff b1 b2
+local and remote run git diff master origin(url)/master 
+
+Git rm:
+-------
+rm files from staging and working git rm filename for all files git rm -r
+rm files from staging git rm --cached
+rm files from working git rm filename
+
+Git checkout:
+------------
+To discard unstaged changes in the tracked files of working dir run git checkout --filename
+
+Git reset:
+----------
+to remove changes from staging area run git reset filename
+undo commits from repo run git reset mode commitid
+files will be discarded in mode -- mixed(local&staging) soft(local) hard(working,local,staging)
+
+
+to list files in staging area run git ls-files
+working ls
+commit git log --oneline
+
+Git branches:
+------------
+available branches- git branch
+create new branch: git branch branchname
+switch to another branch: git checkout branchname
+to create and switch: git checkout -b branchname
+delete a branch: git branch -d branchname
+we can create many branches and work on it without disturbing the main branch and can merge it finally
+
+Git merge:
+----------
+Fast forward merge: changes in child branch only so there will be no conflicts
+three way merge: changes in both master and child branches so there will be conflicts. for this we should resolve the file and then commit it.
+git merge branchname
+
+Git rebase:
+-----------
+git rebase master(it will create objects for commits in another branch)
+git merge branchname
+there will be no conflicts 
+used within only local repo as we cannot find which task is done by whom
+git rebase creates a new set of commits applied on top of the target branch, 
+while git merge creates a new merge commit that combines the changes from both branches
+
+Git clone:
+----------
+makes a copy of remote repo into local repo
+
+Git push:
+---------
+pushes the changes in local repo into remote repo
+
+Git pull:
+---------
+fetches all the changes made in remote repo into local repo
+
+IntelliJ:
+--------
+vcs-get from version control-give the url of the repo-clone the repo
+Push: files will be opened from the repo and you can modify it 
+then go to git-add-commit-push. changes will be updated to the remote repo
+pull: modify the file in remote repo
+git-pull-select the branch where the file is present and pull it
+
+
+
