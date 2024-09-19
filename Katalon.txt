@@ -1,0 +1,141 @@
+Katalon studio:
+---------------
+click operation:
+open browser-input url
+click-objects(objects should be captured and kept using spyweb)
+close browser
+
+Drag and drop:
+open browser-i/p url
+drag and drop to object-source,destination
+get text-destination
+close browser
+
+select from dropdown:
+open
+select option by index-object-ip number
+verify option selected by index-object-ip
+select option by label-object-ip string
+select option by value-object-ip string
+select all option-object
+deselect
+select option by index-option-ip (from-to)
+
+alert:
+open
+click-object(alert button)
+delay-ip number
+accept alert
+click-object(confirm button)
+delay
+dismiss alert
+
+multiple windows:
+open
+click-object(twitter)
+switch to window index-ip(1 i.e,twitter)
+set text-object(username)-ip(string)
+set text-object(password)-ip(string)
+close window index-ip(1)
+switch to window url-ip(actual url)
+click-object(facebook)
+switch to window url-ip
+get url
+
+upload file:
+open
+upload file-object-ip(file location)
+
+file download:
+add this in dictionary of katalon studio
+Firefox profile:
+----------------------
+firefox_profile: Dictionary
+browser.download.manager.showWhenStarting : Boolean : false
+browser.helperApps.neverAsk.saveToDisk : String : text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/msexcel,application/x-msexcel,application/excel
+browser.helperApps.neverAsk.openFile : String : text/csv,application/vnd.ms-excel,application/msexcel,application/x-msexcel,application/excel
+browser.download.folderList : String : 2
+browser.helperApps.alwaysAsk.force : Boolean : false
+browser.download.forbid_open_with : Boolean : true
+
+open
+click-object
+verify element clickable
+wait for page load-ip
+navigate to url-ip
+delay-ip 
+close
+
+Test suite:collection of test cases
+create new test suite and add whichever test case you need
+select whichever you want to run and click on run
+reports will be generated automatically and for specific report we can export as required
+
+Test suite collection: collection of test suites
+to execute test suites in parallel or sequential manner
+
+Email configuration:
+Below is SMTP configuration for popular email servers:
+
+Gmail:
+Host: smtp.gmail.com
+Port: 465
+Username: e.g. yourusername@gmail.com
+Password: Your Gmail password
+
+Yahoo! Mail:
+Host: smtp.mail.yahoo.com
+Port: 465
+Username: e.g. yourusername@yahoo.com
+Password: Your Yahoo! Mail password
+
+Outlook:
+Host: smtp-mail.outlook.com
+Port: 587 or 25
+Username: yourusername@outlook.com
+Password: Your Microsoft password
+Protocol: TLS
+
+For organisations, you have to talk with your client and get your mail server details.
+
+variable:
+set the variables in variables section and ip the variable name in test case input
+using global variables we can set different values for the ip in different environment
+
+katalon recorder extension:
+we can record our operations and run as test case
+
+headless testing:
+testing the application without browser which means runs the test cases in backend
+
+katalon analytics:
+creates a dashboard for all the test suites
+
+data driven testing:
+create a test data in data file and upload the files in which you have entered the data
+go to the test case and give the ip as test data value 
+for parallel execution of all the data create a for loop in script
+for (def row=1;row<=findTestData('data driven').getRowNumbers();row++)
+
+listeners:
+operations that needs to be done pre and post request
+create a listener and we can select for test case or test suite level
+for test case level- listener will be created and we can mention the commands from script which we want to run before and after a test case
+run the test case and now automatically listerner will execute the operation for before and after the test case
+
+API testing:
+we can test api by creating a project as api
+And follow the same process as postman
+
+Auto healing smart xpath:(plugin)
+UI applications may not be constant in nature.As a result the corresponding xpath may not work
+so we can install this plugin
+this will automatically identify the broken xpath and fixes it
+
+Test suite collection scheduler plugin:
+create a test suite collection and add the test suite which you want to run
+create a schedule for periodic run and save it
+
+custom keyword:
+Using custom keyword, we can create our own functions and use them like web, mobile and API keywords
+create a keyword
