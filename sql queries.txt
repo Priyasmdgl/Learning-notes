@@ -1,0 +1,201 @@
+create database sample
+use sample
+create table IT(
+id bigint not null auto_increment,
+name varchar(255) not null,
+sector text,
+primary key(id)
+);
+show tables
+insert into IT(name,sector) values("Priya","QA");
+select * from IT where id=3
+select name from IT where id=3
+select distinct sector from IT
+select * from IT where id=3 and name="Raghav"
+select * from IT order by name asc
+select * from IT where sector is not null
+select * from IT where sector is null
+update IT set sector="support" where id=6
+delete from IT where id=2
+
+create database employee
+use employee
+show tables
+create table employee(
+id bigint not null auto_increment,
+name varchar(255) not null,
+salary bigint not null,
+primary key(id)
+);
+show tables
+describe employee
+select * from employee
+insert into employee(name,salary) values("Priya",100);
+insert into employee(name,salary) values("Raghav",200);
+insert into employee(name,salary) values("Jayanthi",300);
+insert into employee(name,salary) values("Mahesh",400);
+select * from employee limit 2
+select * from employee limit 2,5
+select * from employee where id=3
+select name from employee where id=2
+select distinct salary from employee
+select * from employee where id=2 and name="Raghav"
+select * from employee order by name asc
+select * from employee order by name desc
+select * from employee where salary is not null
+select * from employee where salary is null
+update employee set salary=500 where id=3
+delete from employee where id=4
+select max(salary) from employee
+select max(salary) from employee limit 1
+select * from employee where salary < (select max(salary) from employee)
+select * from employee where salary < 500 limit 2
+select count(*) from employee
+select * from employee where name like "P%"
+select * from employee where name like "%r%"
+select * from employee where salary between 200 and 500
+
+use hr
+select * from employees
+select employee_id,first_name,salary from employees;
+select distinct * from employees
+select * from employees where salary>17000
+select commission_pct from employees
+select * from employees where commission_pct is null;
+select * from employees where first_name='Jennifer';
+select * from employees where salary>4000 and job_id='IT_PROG';
+select * from employees where salary=17000 or job_id='AD_VP';
+select * from employees where not job_id='IT_PROG';
+select * from employees where salary between 2000 and 4000;
+select * from employees where salary not between 12000 and 15000;
+select * from employees where salary=2500 or salary=4000 or salary=6000;
+select * from employees where salary in(2500,4000,6000);
+select first_name from employees where first_name like 'S%';
+select first_name from employees where first_name not like 'S%';
+select first_name from employees where first_name like '%n';
+select first_name from employees where first_name like '%n%';
+select first_name from employees where first_name like '%n_';
+select first_name from employees where first_name like '____';
+select first_name from employees;
+select upper(first_name)from employees;
+select lower(first_name)from employees;
+select * from employees where length(first_name)=4;
+select length(first_name) from employees;
+select length(first_name)=4 from employees;
+select trim('s' from 'steven');
+select instr('steven','v');
+select substr('steven',3,5);
+select concat('steven','king');
+select concat(first_name,last_name) from employees;
+select avg(salary)from employees;
+select sum(salary)from employees;
+select min(salary)from employees;
+select max(salary)from employees;
+select count(*)from employees;
+select department_id,sum(salary)from employees group by department_id;
+select job_id,count(*) from employees group by job_id;
+select job_id,count(*) from employees group by job_id having count(*)>5;
+select department_id,max(salary)from employees group by department_id;
+select department_id,max(salary)from employees group by department_id having max(salary)>10000;
+select * from employees order by salary;
+select * from employees order by department_id asc;
+select * from employees order by first_name asc;
+select department_id,max(salary)from employees where department_id>50 group by department_id;
+select department_id,max(salary)from employees where department_id>50 group by department_id order by department_id asc;
+select department_id,max(salary)from employees where department_id>50 group by department_id having max(salary)>10000 order by department_id asc;
+create view employees_view as select employee_id,first_name,salary from employees;
+select * from employees
+select * from departments
+select * from employees inner join departments on employees.department_id=departments.department_id;
+select * from employees left join departments on employees.department_id=departments.department_id;
+select * from employees right join departments on employees.department_id=departments.department_id;
+select employees.department_id from employees inner join departments on employees.department_id=departments.department_id;
+select e.employee_id,m.manager_id from employees e,employees m where e.employee_id=m.manager_id;
+select salary from employees where first_name='neena';
+select salary from employees where salary>17000;
+select salary from employees where salary>(select salary from employees where first_name='neena');
+
+create database mydb;
+use mydb;
+create table student(
+roll_no int(11),
+name varchar(255),
+marks int(11)
+);
+describe student;
+insert into student values(1,'priya',90);
+insert into student values(2,'raghav',80);
+select * from student;
+alter table student add(city varchar(255));
+alter table student drop city;
+alter table student modify column roll_no bigint;
+alter table student rename column roll_no to s_no;
+set sql_safe_updates=0;
+set autocommit=0;
+delete from student;
+rollback;
+truncate table student;
+drop table student;
+
+create table A(
+num bigint,
+name varchar(20)
+);
+create table B(
+num bigint,
+grade varchar(2)
+);
+insert into A values(1,'abc');
+insert into A values(2,'def');
+insert into A values(3,'ghi');
+insert into B values(2,'A');
+insert into B values(3,'B');
+insert into B values(4,'C');
+select * from A
+select * from B
+select num from A union select num from B;
+select num from A union all select num from B;
+select * from A inner join B on A.num=B.num;
+select * from A left join B on A.num=B.num;
+select * from A right join B on A.num=B.num;
+
+create table school(
+sno int(2),
+name varchar(20),
+marks int(3),
+primary key(sno)
+);
+insert into school values(1,'a',90);
+insert into school values(2,'b',80);
+insert into school values(3,'c',70);
+select * from school;
+create table lib(
+sno int(3),
+foreign key(sno) references school(sno),
+book_name varchar(20)
+);
+insert into lib values(1,'sql');
+insert into lib values(2,'java');
+insert into lib values(4,'python');
+select * from lib;
+alter table school modify sno int(3);
+delete from school where sno=1;
+
+create table demo(
+id int(2) not null,
+marks int(3) check(marks between 70 and 100)
+);
+insert into demo values(1,80);
+insert into demo values(2,50);
+insert into demo values(1,110);
+
+create table orders(
+id int(6),
+order_number bigint,
+order_date datetime default now()
+);
+select now();
+insert into orders values(1,101,'2024-10-03 11:27:00');
+insert into orders(id,order_number) values(2,102);
+insert into orders(id,order_number) values(3,103);
+select * from orders;

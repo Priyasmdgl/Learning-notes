@@ -1,0 +1,80 @@
+use database;
+show tables;
+select * from customers;
+describe information_schema.columns;
+
+Testing the schema of the database:
+-----------------------------------
+we need to check the following
+check table presence in database schema
+show tables;
+table name conventions(there should not be any space and should be single word)
+show tables;
+no.of columns
+select count(*) as numberofcolumns from information_schema.columns where table_name='customers';
+column names 
+select column_name from information_schema.columns where table_name='customers';
+data type of columns 
+select column_name, data_type from information_schema.columns where table_name='customers';
+size of the columns 
+select column_name, column_type from information_schema.columns where table_name='customers';
+null fields
+select column_name, is_nullable from information_schema.columns where table_name='customers';
+column keys
+select column_name, column_key from information_schema.columns where table_name='customers';
+
+stored procedure testing:
+------------------------
+stored procedure is a block of sql statements
+we can save it and can reuse multiple time and we can also pass parameters to a sp
+
+sp without parameters:
+----------------------
+delimiter //
+create procedure customers()
+begin
+select * from customers; (we can write set of queries which we want to execute)
+end //
+delimiter ;
+
+to call a sp: call sp name
+sp with single parameter: 
+--------------------------
+delimiter //
+create procedure customersbycountry(in mycountry varchar(50))
+begin
+select * from customers where country=mycountry;
+end //
+delimiter ;
+call customersbycountry('France');
+
+sp with multiple parameters:
+----------------------------
+delimiter //
+create procedure customersbycityandpostalCode(in mycity varchar(50),in mypostalCode bigint)
+begin
+select * from customers where city=mycity and postalCode=mypostalCode;
+end //
+delimiter ;
+call customersbycityandpostalCode('Paris',75016); 
+
+Test scenarios for sp:
+----------------------
+check sp exist in database:
+show procedure status where db='classicmodels'; or
+show procedure status where name='customers';
+for the below scenarios call the sp and then execute the query
+sp with valid input data:
+call the sp and compare the results with the query which is written in that sp. both results should match
+
+Data mapping testing:
+---------------------
+testing the database with respect to the frontend operations
+here we should check for creation,retrieving,updation and deletion of data in frontend, administration account and the database
+
+Data integrity testing:
+-----------------------
+checking the constraints specified in each table
+
+
+

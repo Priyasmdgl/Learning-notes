@@ -1,0 +1,219 @@
+Database:
+Collection of data that is organized and stored in a structured manner
+It contains tables full of information with each table containing rows(records) and columns(fields)which represents diff types of data
+
+DBMS:
+DBMS is used to create,manage and manipulate database
+it handles security,backups,import and export data
+it allows the application and users to connect with the database
+
+DB Client is a interface used for connecting to database( CLI or GUI).
+DB Server is a storage area where the database objects and data will be stored.
+
+Relational database:
+organizes data into a table of rows and columns with each table contains data that is related to each other
+e.g: student,id.courses
+MySQL,PostgreSQL,oracle,microsoft sql,sqlite,mariadb,ibmdb2,amazon aurora
+
+Non relational database:(NoSql database):
+it is designed to handle large amounts of unstructured data
+data can be stored as documents,key value pairs or some other structures and can be accessed through api or other interface methods
+MongoDB,cassandra,redis,dynamodb,orientdb,etc
+
+SQL:
+used to communicate to the database to perform diff kinds of operations
+standard programming language used to manage and change data in relational database
+
+DDL: create,alter,drop,truncate,rename
+DML: insert,update,delete
+DQL: select
+TCL: commit,rollback,save point
+DCL: grant,revoke
+
+SQL data types:
+numeric- int,smallint,tinyint,bigint,float,double,decimal
+text- char,varchar,blob,mediumtext,blob,longtext,blob
+date/time- date,time,datetime,timestamp
+
+Row:
+it is a single entry in a database table.
+also known as record or tuple
+
+Column:
+it is a vertical set of values in a database table
+also known as field or attribute
+
+Attribute:
+it is a piece of data or a characteristic of an entity represented in a database
+here column represents diff attribute and row represents a single entity of that attribute
+
+tuple/record:
+it is a row in a database table. it consists of set of values that represents diff attributes of a single entity
+
+Primary key:
+it is a field in a database table that uniquely identifies each record in a table
+doesnot accept null values
+there will be only one primary key in a table
+
+Natural key:
+A natural key is a unique identifier that is inherent to the data, rather than being artificially assigned.
+
+Foreign key:
+A foreign key is a field or set of fields in a table that references the primary key of another table.
+It is used to establish a link between the data in two tables and enforce referential integrity
+accepts multiple null values
+there can be more than one foreign key in a table
+values should be present in both primary and foreign key.i.e, if we enter a value to the foreign key which is not present in primary it will not allow
+also to delete it first it should be deleted from the child table(foreign) and then from parent table(primary)
+
+compostite key:
+it is a type of primary key that is composed of multiple attributes to identify the unique records in a table
+
+Install MySQL on the System
+https://dev.mysql.com/downloads/installer/
+Install DB Gate
+https://dbgate.org
+Relational Database
+https://drawsql.app/teams/k1-1/diagrams/student-and-course
+
+Where clause:
+Used for selecting the rows based on condition.(Filtering the rows using where condition)
+
+Logical operators:
+and,or,not- to check for more than one condition
+
+Between: used to display the rows which is following in the range of values.
+
+IN: IN operator return the rows when the values are matching in the list
+
+PATTERN MATCHING OPEARATORS( Whiled card characters)
+% --> many characters
+_ --> single character
+
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE 'S%';(name starting with S)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE '%r';/(ending with r)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE 'S%r';(starting with s and end with r)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE '%m%'(middle letter with m)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME NOT LIKE 'S%';(not starting with s)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE '%e_';(starting with any letter and should have a letter e and after that there should be only one character)
+SELECT * FROM EMPLOYEES WHERE FIRST_NAME LIKE '____';(4 underscore)(name with 4 letters)
+
+Distinct:
+it gives only the unique values instead of all the duplicate values
+e.g: if a column consists of same values multiple times, distinct keyword fetches only one of that value remaining duplicate values will be ignored
+
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+DROP DATABASE databasename;
+DROP TABLE table_name;(completely deletes the table)
+ALTER TABLE customers ADD Email varchar(255);
+alter table customers rename column org to altered
+TRUNCATE TABLE table_name;(clears data in a table)
+
+SQL Joins:
+A JOIN clause is used to combine rows from two or more tables,based on a related column between them.
+joins help retrieving data from two or more tables
+the tables are mutually related using primary and foreign keys
+(INNER) JOIN: Returns records that have matching(common) values in both tables
+LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+returns matched records+unmatched records from left table
+RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+matched records+unmatched records from right table
+FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+matched records+unmatched records from both the tables
+self join: to retrieve common values in same table for a diff columns
+
+SQL constraints:
+SQL constraints are used to specify rules for the data in a table.
+it can be specified with the create or alter cmd
+NOT NULL- Ensures that a column cannot have a NULL value
+UNIQUE- Ensures that all values in a column are different. does not allow any duplicate values for no.s and string but null values can be duplicated
+PRIMARY KEY- A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table. it doesnot allow any duplicate and null values
+FOREIGN KEY- uniquely identifies a row/record in another table
+CHECK - Ensures that the values in a column satisfy a specific condition
+DEFAULT- Sets a default value for a column if no value is specified
+CREATE INDEX - Used to create and retrieve data from the database very quickly
+AUTO_INCREMENT - increment by own
+
+CREATE is used to create database objects(Table, views, synonymes,etc...)
+• Adding a new column
+ALTER TABLE STUDENT ADD(grade varchar(2));
+• Dropping a column from table
+ALTER TABLE STUDENT DROP(GRADE);
+• Modifying the existing column
+We can increase/decrease the size of the column.
+We can decrease the column size ONLY when existing column values can fit into new size..
+ALTER TABLE STUDENT MODIFY(GRADE NUMBER(2));
+• Renaming a column
+ALTER TABLE STUDENT RENAME COLUMN SNAME TO STUNAME;
+DROP:
+Used to dropping the table definition with data
+DROP TABLE STUDENT;
+• TRUNCATE
+Used to remove all the rows from the table.
+TRUNCATE TABLE STUDENT;
+• DELETE
+Used for deleting all the rows from the table.
+DELETE FROM TABLE;
+• DROP TABLE STUDENT; -- completely drops the structure & data
+• TRUNCATE TABLE STUDENT; -- Removes the all the rows permanently and we cannot rollback but the structure will be present
+• DELETE FROM STUDENT; -- Removes all the rows temporarily. We can Roll back the rows.
+• RENAME
+used for changing the name of the table
+RENAME STUDENT TO STU;
+
+Initcap(): converts first letter is capital and remaining are lower case letters.
+Trim: removes specific character from right and left side
+INSTR: returns the position of the character within a string
+substr,substring: gives the character from this to that
+
+order of execution:
+Where-> group by-> having-> order by
+
+Set operators:
+union and union all: to retrieve the data from multiple tables. datatype and no.of columns should be same in both the tables
+union: combines values from both the tables. no duplicate values
+union all: combines all the values including duplicate from both the tables
+intersect: combines the common values from both the tables
+minus: gives only the unique values from both the tables(value which is present in one table and not in other table)
+
+Views:
+It is a virtual table
+A database object that allows generating a logical subset of data from one or more tables
+
+Index:
+indexes are used to retrieve data from the database very fast
+the users cannot see the indexes,they are just used to speed up searches,queries
+
+sub query:
+query within a query
+inner query will execute first
+outer query(inner query)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
