@@ -1,0 +1,164 @@
+TestNG:
+-------
+Testing framework used for unit,integration and functional testing
+NG stands for Next Generation
+
+Installation:
+-------------
+In eclipse IDE go to help-install new software and add testng link(https://testng.org/testng-eclipse-update-site) and install it and restart the ide 
+create a testng package and create a class and add your testcase
+Add TestNG annotation to each of your test cases (@Test)
+for the first time once you enter @Test hover over it and select testng library and then hover over it and select import testng annotation
+Then run as testng application and you will get the results of your testcases written.
+
+Annotations in TestNG:
+----------------------
+@BeforeTest,@AfterTest,
+@BeforeSuite,@AfterSuite,
+@BeforeMethod,@AfterMethod,
+@BeforeClass,@AfterClass,
+@DataProvider
+@Parameters
+
+Setting priority to test cases:
+-------------------------------
+if we want to run the test cases according to specified order we should set priority for the test cases
+@Test(priority=0)
+@Test(priority=1)
+@Test(priority=2) and so on
+priority is an attribute
+
+Skip a test case:
+-----------------
+To skip a test case we have use an attribute called enabled to false while setting the priority
+@Test(priority=0,enabled=false)
+
+Dependancy:
+-----------
+If some test cases is failed the other coressponding test cases should not run for this we use dependancy method
+@Test(enabled=false)
+@Test(dependsOnMethods="")
+
+Before and after test suite:
+----------------------------
+We can specify some operations here which we need to run before and after a test case
+@BeforeSuite
+public void name(){
+operation
+}
+@Test
+public void name(){
+test case
+}
+@AfterSuite
+public void name(){
+operation
+}
+
+Creating a test suite in xml file:
+----------------------------------
+install xml editor from the eclipse marketplace
+then click on your project add-other-xml file-finish
+xml file will be opened and here you can create suite for your test cases
+model:
+-----
+<suite name="">
+<test name="">
+<classes>
+<class name=""></class>
+<class name=""></class> and so on
+</classes>
+</test>
+</suite>
+
+Right click on the xml file and click on run as suite
+
+Click on the project and click refresh it will automatically create a report folder
+verbose-gives detailed information about the report
+
+Grouping test cases in testng:
+------------------------------
+If we dont want to execute some of the test cases and run the remaining we can group them and keep it
+we can keep the desired test cases which we want to run in a group and run it
+in xml file we need to add groups,run,include or exclude
+<suite name="">
+<test name="">
+<groups>
+<run>
+<include name=""></include>
+          or
+<exclude name=""></exclude>
+</run>
+</groups>
+<classes>
+<class name=""></class>
+<class name=""></class> and so on
+</classes>
+</test>
+</suite>
+
+and in test case we have to mention the group like
+@Test(groups={""})
+public void name(){
+test case
+}
+
+Parameterization:
+-----------------
+While running a suite if we want to input some values to the test cases we can give that in the xml file using paramerization concept
+in xml file we need to add the following according to the req
+<parameter name="Name" value="Priya"></parameter>
+in code we need to add
+@Test
+@Parameters("Name")
+public void print(String name) {
+	System.out.println(name);
+	}
+
+Executing test cases parallely:
+-------------------------------
+create the test cases and in xml file add the following
+<suite name="" parallel="methods" thread-count="2">
+
+Assertions:
+-----------
+to check the actual result with the expected result
+String name=""
+public void name(){
+Assert.assertEquals(name,"");
+}
+
+Hierarchy of annotations:
+-------------------------
+beforesuite
+beforetest
+beforeclass
+beforemethod
+testcase
+aftermethod
+afterclass
+aftertest
+aftersuite
+
+Listeners:
+----------
+setting conditions before running each and every test cases
+public class Listener implements ITestListener
+hover over listener and select add unimplemented methods and choose whichever you want
+Methods:
+on test start
+on test success
+on test failure
+on test skipped
+on test failed within success percentage
+on start 
+on finish
+
+in xml file add listeners as
+<listeners>
+<listener class-name=""></listener>
+</listeners>
+give the test case in class tag
+
+
+
