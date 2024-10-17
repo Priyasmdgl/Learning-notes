@@ -65,7 +65,7 @@ model:
 <suite name="">
 <test name="">
 <classes>
-<class name=""></class>
+<class name="packagename.classname"></class>
 <class name=""></class> and so on
 </classes>
 </test>
