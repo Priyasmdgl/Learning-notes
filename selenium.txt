@@ -1,0 +1,293 @@
+Selenium is an automation framework for automating web applications
+Prerequisuite:
+--------------
+install java and any ide like eclipse or intellij and download selenium jar file
+create a java project-package-class
+add selenium jar file to the project by right click on project-build path-configure build path-add external jar files-select the selenium jar file and apply
+java 8 download - https://www.oracle.com/java/technologies/downloads/?er=221886
+eclipse download-https://www.eclipse.org/downloads/
+selenium standalone jar download(3.141.59)-https://selenium-release.storage.googleapis.com/index.html?path=3.141/
+chrome driver 129 download-https://www.chromedriverdownload.com/en/downloads/chromedriver-129-download
+
+common cmds:
+------------
+//to tell which browser we want to use and its location
+System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+//to open a chrome browser
+WebDriver driver = new ChromeDriver();
+//the url we want to open
+driver.get("http://www.google.co.in");
+           or
+//navigate to the url
+driver.navigate().to("https://www.leafground.com/link.xhtml");
+//to close the browser
+driver.quit();
+//to find an element we want to do a process in that
+driver.findElement(By.name,id,classname,link,xpath...("")   );
+
+Text box:
+---------
+enter text:
+driver.findElement().sendKeys("")+Keys.Enter();
+clear text:
+driver.findElement().clear;
+clear and sendkeys:
+appendbox.clear();
+appendbox.sendKeys("Dindigul");
+driver.findElement().click;
+retrieve the text:
+String variable=driver.findElement().getAttribute("");
+sysout(variable);
+
+To find the position of a button:
+---------------------------------
+Point anyname=variable.getLocation();
+int name=anyname.getX();
+int name=anyname.getY();
+sysout("value is: " +value);
+
+To find the colour of a button:
+-------------------------------
+String colour=variable.getCssvalue("");
+sysout("colour is" +colour);
+
+To find the size of a button:
+-----------------------------
+int height=vaiable.getSize().getheight();
+int width=vaiable.getSize().getwidth();
+sysout();
+
+To find default selected radio button:
+--------------------------------------
+boolean status=element.isSelected();
+sysout();
+
+To deselect a checkbox:
+----------------------
+if(element.isSelected())
+{
+element.click();
+}
+
+To click an alert button:
+------------------------
+Keyword Alert
+WebElement alertbox=driver.findElement(By.id("alertButton"));
+alertbox.click();
+org.openqa.selenium.Alert button = driver.switchTo().alert();
+Thread.sleep(2000);
+button.accept();
+
+Dropdown:
+---------
+Keyword Select
+WebElement dropdown=driver.findElement(By.className(" css-1hwfws3"));
+Select menu = new Select(dropdown);
+index: menu.selectByIndex(1);
+value: menu.selectByValue("");
+visible text: menu.selectByVisibleText("");
+sendkeys: menu.selectByIndex(2);
+          dropdown.sendKeys("Ms.");
+multiselect box:
+WebElement multiselect = driver.findElement(By.xpath("//*[@id=\"selectMenuContainer\"]/div[7]/div/div/div/div[1]/div[1]"));
+Select box=new Select(multiselect);
+box.selectByIndex(0);
+box.selectByIndex(1);
+box.selectByIndex(2);
+
+Windows handling:
+-----------------
+Parent window:
+String parent_window = driver.getWindowHandle();
+
+child windows:
+Set<String> windows=driver.getWindowHandles();
+for (String newwindow : windows) {
+	driver.switchTo().window(newwindow);
+}
+
+Switching to parent window:
+driver.switchTo().window(parent_window);
+
+count the no.of windows opened:
+int windows_opened=driver.getWindowHandles().size();
+System.out.println(windows_opened);
+
+Closing all other windows other than parent window:
+Set<String> windows1=driver.getWindowHandles();
+for (String newwindows: windows1) 
+	//condition for closing all other windows other than parent window
+{
+	if(!newwindows.equals(parent_window)) {
+		driver.switchTo().window(newwindows);
+		driver.close();
+	}
+	}
+
+Frames:
+-------
+Switching to the new frame:
+driver.switchTo().frame(0);
+
+switching to nested frames:
+driver.switchTo().frame(1);
+driver.switchTo().frame("frame2");
+
+finding the no.of frames in a page:
+List<WebElement> total_frames=driver.findElements(By.tagName("iframe")); 
+int number=total_frames.size();
+System.out.println(number);
+
+Drag and drop:
+--------------
+For all the mouse operations keyword is Actions and at the end we should give build().perform();
+Actions dd = new Actions(driver);
+dd.clickAndHold(drag).moveToElement(drop).release(drop).build().perform();
+or we can use the below one
+dd.dragAndDrop(drag, drop).build().perform();
+
+Tooltip:
+--------
+the text which we get when we hover the mouse
+find an element and get the value
+String text=variable.getAttribute("title");
+sysout();
+
+Selectable:
+-----------
+storing the elements in a list
+List<WebElement> selection = driver.findElements(By.xpath("//*[@id=\"verticalListContainer\"]/li")); (here li denotes the list)
+int size=selection.size();
+System.out.println(size);
+Actions selectable = new Actions(driver);
+selectable.keyDown(Keys.CONTROL).click(selection.get(0)).click(selection.get(1)).build().perform();
+//we can also use the below method
+Actions actions = new Actions(driver);
+actions.clickAndHold(selection.get(0));
+actions.clickAndHold(selection.get(1));
+actions.build().perform();
+
+Sortable:
+---------
+//storing the from and to element
+WebElement fromElement=sortable.get(6);
+WebElement toElement=sortable.get(0);
+Actions actions = new Actions(driver);
+//moving the from element to the to element
+actions.clickAndHold(fromElement);
+actions.clickAndHold(toElement);
+actions.release(toElement);
+actions.build().perform();
+
+Auto completion:
+----------------
+when we type the first or some letter of any word it automatically gives some suggestions of text
+//finding an element and sending the first letter of the color
+WebElement box = driver.findElement(By.id("autoCompleteMultipleContainer"));
+box.sendKeys("G");
+Thread.sleep(2000);
+//storing the colors in a list
+List<WebElement> colors=driver.findElements(By.xpath("//*[@id=\"autoCompleteSingleContainer\"]/div/div[1]/li"));
+//checking the available options with a letter starting with G
+for (WebElement webElement : colors) {
+if(webElement.getText().equals("Green")) {
+webElement.click();
+break;
+
+Download a file:
+----------------
+Keyword is File
+WebElement download = driver.findElement(By.id("j_idt93:j_idt95"));
+download.click();
+//to check whether the downloaded file exists in downloads
+//setting the path where the file is downloaded
+File location = new File("C:\\Users\\HP\\Downloads");
+//storing all the files in a list which is present in downloads
+File[] allfiles= location.listFiles();
+//checking each file name with the file name which we downloaded
+for (File file : allfiles) {
+	if(file.getName().equals("TestLeaf Logo.png")) {
+		System.out.println("File is downloaded");
+		break;
+	}
+
+Upload a file:
+--------------
+click();
+Keyword is StringSelection
+//setting the file path using string selection and setting the file content from clipboard to toolkit
+StringSelection select = new StringSelection("C:\\Users\\HP\\Downloads\\TestLeaf Logo.png");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(select, null);
+//paste the path and press enter
+Robot robot = new Robot();
+robot.keyPress(KeyEvent.VK_CONTROL);
+robot.keyPress(KeyEvent.VK_V);
+robot.keyRelease(KeyEvent.VK_V);
+robot.keyRelease(KeyEvent.VK_CONTROL);
+robot.keyPress(KeyEvent.VK_ENTER);
+		
+Broken image:
+Keyword is naturalWidth
+//naturalWidth=0
+if(brokenimage.getAttribute("naturalWidth").equals("0")) {
+System.out.println("The image is broken");
+}
+else {
+System.out.println("The image is not broken");
+}
+}
+
+Link:
+-----
+//finding the url without clicking the link
+WebElement url = driver.findElement(By.partialLinkText("Find the URL"));
+String actual_url= url.getAttribute("href");
+System.out.println(actual_url);
+//broken link
+WebElement brokenlink=driver.findElement(By.linkText("Broken?"));
+brokenlink.click();
+String title=driver.getTitle();
+if(title.contains("404")) {
+	System.out.println("broken link");
+}else {
+	System.out.println("not broken");
+}
+driver.navigate().back();
+//duplicate link
+WebElement duplink = driver.findElement(By.linkText("Go to Dashboard"));
+duplink.click();
+driver.navigate().back();
+//no.of links present in a page
+List<WebElement> count=driver.findElements(By.tagName("a"));
+int links=count.size();
+System.out.println(links);
+
+Calendar:
+---------
+//sendkey method
+WebElement calendar = driver.findElement(By.id("datePickerMonthYearInput"));
+calendar.clear();
+calendar.sendKeys("10/14/2024"+Keys.ENTER);
+//using calendar
+WebElement calendar = driver.findElement(By.id("datePickerMonthYearInput"));
+calendar.click();
+WebElement next = driver.findElement(By.xpath("//*[@id=\"datePickerMonthYear\"]/div[2]/div[2]/div/div/button[2]"));
+next.click();
+WebElement date = driver.findElement(By.xpath("//*[@id=\"datePickerMonthYear\"]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[2]"));
+date.click();
+
+Tables:
+-------
+//finding the no.of columns
+List<WebElement> columns = driver.findElements(By.tagName("th"));
+int column_size=columns.size();
+System.out.println(column_size);
+//finding the no.of rows
+List<WebElement> rows = driver.findElements(By.tagName("tr"));
+int row_size=rows.size();
+System.out.println(row_size);
+//get the succeeding value of some element by using xpath
+WebElement text = driver.findElement(By.xpath("//td[normalize space()='Deepesh Octavia']//following::td[1]"));
+String country=text.getText();
+System.out.println(country);
+
