@@ -1,0 +1,40 @@
+POM:
+----
+To easily maintain the elements of the different page, u r going to keep separate classes for separate pages as part of your framework
+if we are using the same element in diff test cases and if the property of the element changes, we need to check and change in all the test cases.
+inorder to overcome that we go for page object model framework
+i.e, keeping all the elements we use to test our application inside POM framework and then calling and using it into our test cases
+
+we can create a separate class for storing the web elements and define them in it as below
+public static WebElement email(WebDriver driver) {
+	return driver.findElement(By.id("email"));
+}
+in out test case we can use it as below
+objects.email(driver).sendKeys("user@phptravels.com");
+
+Enhancing our POM project with selenium page factory:
+-----------------------------------------------------
+we can also find an element using FindBy method and call them into test using pagefactory class
+we can pass driver function using init elements method
+@FindBy(id="email")
+	public static WebElement email;
+
+PageFactory.initElements(driver,findBy.class);
+	findBy.email.sendKeys("user@phptravels.com");
+
+if we don't give static we need to create an object in test case 
+
+POM without find element:
+-------------------------
+we can also POM within the class using the below method
+we need to declare the element we need to find and use it in test case using pagefactory class and init method
+While using pagefactory we need to use static method
+here pagefactory checks for element id,name only and finds the element
+public class withoutFindBy {
+	public static WebElement username;
+public void login() {
+		PageFactory.initElements(driver, withoutFindBy.class);
+		username.sendKeys("Admin");
+}
+}
+
