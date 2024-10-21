@@ -1,0 +1,29 @@
+Selenium grid:
+--------------
+Selenium Grid is nothing but a component of Selenium like Webdriver and IDE.
+
+In market, there is always a requirement to test the product across operating systems, on different browsers to ensure the quality. 
+So inorder to test, our product with Selenium code on different OS or different browsers or same browser with different versions we go for selenium grid concept
+
+Grid is a master-slave configuration. 
+MASTER = HUB
+SLAVES = NODES
+For any Grid setup, there will be only one HUB and multiple NODES.
+
+Selenium standalone server. Download: https://www.seleniumhq.org/download/
+
+Steps:
+First, configure the hub: java -jar selenium-server-standalone-3.141.59.jar -role hub
+Next, we have to do is register the node to the hub: java -Dwebdriver.chrome.driver="chromedriver.exe" –jar selenium-server-standalone-3.141.59.jar –role node –hub http://YOUR HUB IP:4444/grid/register -port 5555 
+
+code:
+-----
+String URL ="";
+String Node = "";
+DesiredCapabilities cap=DesiredCapabilities.chrome();
+cap.setBrowserName("chrome");
+cap.setPlatform(Platform.LINUX);
+
+WebDriver driver=new RemoteWebDriver(new URL(Node),cap);
+driver.navigate().to(URL);
+driver.findElement
