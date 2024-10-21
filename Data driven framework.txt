@@ -1,0 +1,123 @@
+A framework should be reusable,organised,manageable,understandable,scalable,cost effective and standard
+
+Using testng parameters for data driven testing:
+------------------------------------------------
+in xml file create parameters tag according to your input
+<parameter name="username" value="student"></parameter>
+<parameter name="password" value="Password123"></parameter>
+and in class call that parameters which you have mentioned in xml file
+@Test
+@Parameters({"username","password"})
+public void correct_UsernameandPassword(String name,String pwd)
+
+Data providers in testng:
+-------------------------
+The above method of data driven testing using parameters will have more lines of code and class
+to reduce the lines of code we go for dataprovider method
+public class Login_using_Dataproviders {
+	
+	String [][] data= {
+			{"student","Password123"},
+			{"Student","Password@123"},
+			{"student","Password@123"},
+			{"Student","Password123"}
+	};
+
+	@DataProvider(name="login data")
+	public String[][] dataprovider() {
+		return data;
+	}
+	
+	@Test(dataProvider = "login data")
+	public void correct_UsernameandPassword(String name,String pwd) {
+}
+
+Getting data through excel using jxl:
+-------------------------------------
+to interact with excel we can either use jxl or apache poi jar
+jxl jar file download: http://www.java2s.com/Code/Jar/j/Downloadjxl26jar.htm
+Steps with JXL jars:
+--------------------
+to use jxl jar we need to save the excel file with 97-2003 extension
+File location
+get workbook
+get sheet
+get rows
+get columns
+iterate and get cell values
+
+public class JXL {
+	
+	String [][] data= null;
+	@DataProvider(name="login data")
+	public String[][] dataprovider() throws BiffException, IOException {
+		data=Login_data();
+		return data;
+	}
+	
+	public String[][] Login_data() throws IOException, BiffException {
+		FileInputStream excel = new FileInputStream("C:\\Users\\HP\\Documents\\Login data.xls");
+		Workbook workbook = Workbook.getWorkbook(excel);
+		Sheet sheet = workbook.getSheet(0);
+		int rowcount=sheet.getRows();
+		int columncount=sheet.getColumns();
+		String[][] data = new String[rowcount-1] [columncount];
+		for(int i=1;i<rowcount;i++) {
+			for(int j=0;j<columncount;j++) {
+				data[i-1][j]=sheet.getCell(j, i).getContents();
+			}
+		}
+		return data;
+	}
+
+@Test(dataProvider = "login data")
+	public void correct_UsernameandPassword(String name,String pwd) {
+
+}
+
+Getting data through excel using apache poi:
+--------------------------------------------
+Steps:
+read the file location
+create object for workbook
+go to the sheet to be worked on
+row,column iteration and get row,column values
+
+For 2003 excel file we need to use HSSF
+for 2007 or later we need to use XSSF
+
+public class Apache_POI {
+    WebDriver driver;
+
+    @DataProvider(name = "login data")
+    public String[][] Login_data() throws IOException {
+        FileInputStream excel = new FileInputStream("C:\\Users\\HP\\Documents\\Login data.xls");
+        Workbook workbook = new HSSFWorkbook(excel);
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        int rowCount = sheet.getPhysicalNumberOfRows();
+        String[][] data = new String[rowCount - 1][2]; // Declare as String[][]
+        
+        for (int i = 1; i < rowCount; i++) {
+            Row row = sheet.getRow(i);
+            data[i - 1][0] = row.getCell(0).getStringCellValue(); // username
+            data[i - 1][1] = row.getCell(1).getStringCellValue(); // password
+        }
+        
+        workbook.close();
+        excel.close();
+        return data;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
