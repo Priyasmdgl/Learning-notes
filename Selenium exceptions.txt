@@ -1,0 +1,46 @@
+Exceptions:
+-----------
+Due to some external problem, our program execution will get stucked suddenly and we will be getting some exceptional errors at the console
+webdriver exception is the parent exception
+
+no such element exception:
+when the driver is unable to find an element we get no such element exception
+
+stale element reference exception:
+if we want to reuse the same element, we should again find the element and perform the operation
+if we dont find the element once again and perform the operation we will be getting stale element exception
+
+unhandled alert exception:
+when an alert box is prompted, we need to accept or dismiss it and then perform the other operations
+instead if we try to perform some other operation without accepting or rejecting it will throw an unhandled alert exception
+
+invalid element state exception:(clear)
+while performing an operation with the hidden elements we will be getting invalid element state exception
+
+element not visible exception:(sendkeys,buttons)
+with hidden elements
+
+no such frame exception:
+if we search for an invalid index of the frame we get no such frame exception
+
+no such window exception:
+if we search for an invalid window we will get no such window exception
+
+no such session exception:
+once the driver gets closed the session will get expired
+if we try to find an element and perform some operation once the driver gets closed it will not be able to find the session and we will be getting no such session exception
+
+unreachable browser exception:
+due to mismatch in compatibility of the browser and our system and also for the incorrect url we will be getting unreachable browser exception
+
+element not interactable exception:
+other element may receive the click due to mismatch in finding the element or due to time mismatch in finding the element and we will be getting element not interactable exception
+
+timeout exception:
+if the driver is not able to find the element within specified time we will be getting timeout exception
+
+session not created exception:
+when we close the browser manually before the session gets created to perform the required operation we get session not created exception
+
+
+
