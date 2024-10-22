@@ -1,0 +1,85 @@
+Xpath:
+------
+xpath- xml path(extendable markup language)
+used for locating an element in a web page
+We go for xpath only if we dont find any other locators such as id,name,class name,link,partial link text and tagname
+Using SGML(Standard Generalised Markup Language)XML has the capacity to identify web elements within HTML
+
+Types of xpath:
+---------------
+Absolute xpath:
+it will start from the root node and starts with single /
+/html/head/body/div/p
+
+Relative xpath:
+directly starts from the current node and starts with double //
+//p
+syntax:
+-------
+//element[@attribute='value']
+
+Scenarios:
+----------
+Locating elements unknown element and known attribute:
+//*[@attributeName='value']
+here * indicates unknown element
+e.g://*[@id='email']
+
+locating elements with known element and attribute:
+//input[@id='email']
+
+locating elements with known visible text:
+if we know the exact text we can use it
+//element[text()='exact text']
+//*[text()='about us']
+
+locating elements with partially known text:
+//element[contains(text(),'part of the text known')]
+//*[contains(text(), 'All Rights')]
+
+locating elements with multiple attributes:
+//*[attribute1='value'][attribute2='value']...
+//*[@id='submitBTN'][@type='submit']
+
+locating elements when starting visible text is known:
+//*[starts-with(text(),'starting text')]
+//*[starts-with(text(),'file')]
+
+locating elements with dynamic attribute values:
+//*[contains(@attribute,'value')]
+//*[starts-with(@attribute,'value')]
+//*[contains(@id,'email')]
+//*[starts-with(@class,'d-flex align-items-center')]
+
+locating a parent element:
+using known element and attribute we will be finding the parent element
+//[knownxpath]/parent::element
+//*[@id='email']/parent::*
+
+locating a child element:
+//knownxpath/child::element
+        or
+//knownxpath/element
+//*[@class='form-floating mb-3']/child::*
+//*[@class='form-floating mb-3']/input
+
+locating ancestors of a known element:
+//[knownxpath]/ancestor::element
+//*[@id='submitBTN']/ancestor::*
+
+locating following element:
+//[knownxpath]/following::element
+//*[@id='submitBTN']/following::*
+
+locating preceding element:
+//[knownxpath]/preceding::element
+//*[@id='submitBTN']/preceding::*
+
+locating following-preceding element:
+//[knownxpath]/following-preceding::element
+//*[@id='submitBTN']/following-preceding::*
+
+locating following-sibling element:
+//[knownxpath]/following-sibling::element
+//*[@id='submitBTN']/following-sibling::*
+
