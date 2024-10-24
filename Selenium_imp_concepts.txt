@@ -1,0 +1,452 @@
+diff bet close and quit:
+------------------------
+close-closes current window which is focused by the driver in a browser
+quit-closes all windows opened by the driver in a browser
+
+Waits:
+------
+if some element is not visible,not interactable the driver will not wait until it finds the element and will throw no such element exception
+So, we can add some wait to our code so that it can wait and search for the element
+if we use thread.sleep the driver will wait until the time which we had specified even if the operation gets loaded before the specified time. 
+As a result, it will consume more time which is not a best practice for automation. That's why we go for the concept of wait
+Types: implicit,explicit,fluent
+
+Implicit wait:
+--------------
+this wait is applicable until it finds driver.quit()
+implicit wait will check only if the element is present in DOM or not and perform the operation
+it doesn't bother about whether the element is visible or interactable
+if it finds the element before the specified time it doesn't wait until the specified time and moves to the next operation
+if there is network issues and the application behaves very slow we can use implicit wait
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+Explicit wait:
+--------------
+it waits until the element is clickable,to be selected,located,etc.
+we need to define it under specific element
+WebDriverWait wait = new WebDriverWait(driver, 10);
+WebElement profile = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"fadein\"]/main/div/div/div/div[2]/ul/li[3]/a")));
+profile.click();
+
+Fluent wait:
+------------
+If we know the exact time we want to wait, we can use fluent wait
+Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(10)).pollingEvery(Duration.ofSeconds(2)).ignoring(org.openqa.selenium.NoSuchElementException.class);
+WebElement profile = wait.until(new Function<WebDriver, WebElement>() {
+public WebElement apply(WebDriver driver) {
+return driver.findElement(By.xpath("//*[@id=\"fadein\"]/main/div/div/div/div[2]/ul/li[3]/a"));
+}
+});
+profile.click();
+
+Get vs navigate:
+----------------
+get will not store the history whereas navigate stores the history
+using navigate we can go back,go forward,refresh
+get will wait until all the elements appear in DOM whereas navigate wont
+
+Screenshot:
+-----------
+we can take screenshot using selenium by following the below steps
+using selenium TakesScreenshot interface
+call GetScreenshotAs method and store it in a file
+create an image file in any location
+copy the screenshot in the image file which we created in above step using FileUtils.(commons-io) or using FileHandler as well to copy the file
+TakesScreenshot screenshot = (TakesScreenshot) driver;
+File sourcefile= screenshot.getScreenshotAs(OutputType.FILE);
+File destinationfile = new File("C:\\Users\\HP\\Downloads\\image.png");
+org.openqa.selenium.io.FileHandler.copy(sourcefile, destinationfile);
+this method will not work when an alert is open and also it will not take screenshot of full page.so we go for robot class
+
+another way to take screenshot is by using robot class
+create an object of robot class
+get the screensize using toolkit and store it
+use rectangle class and pass the screen size
+use createScreenCapture of robot class and capture screenshot
+define destination path file for screenshot
+write temp file in to destination file
+Robot robot = new Robot();
+Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+Rectangle rectangle = new Rectangle(screensize);
+BufferedImage sourcefile = robot.createScreenCapture(rectangle);
+File destinationfile = new File("C:\\Users\\HP\\Downloads\\snap.png");
+ImageIO.write(sourcefile,"png", destinationfile);
+
+Diff ways to refresh a browser:
+-------------------------------
+we can refresh a browser using
+refresh command
+driver.getCurrentUrl()
+javascript executor: location.reload() or history.go(0)
+robot class f5
+pressing F5 using sendkeys will not work
+
+driver.get("https://www.google.com");
+	      //or
+driver.navigate().to("http://www.google.co.in");
+WebElement searchbox = driver.findElement(By.name("q"));
+searchbox.sendKeys("Dindigul");
+	      //using refresh command
+driver.navigate().refresh();
+	      //using get currenturl if we use driver.get command
+driver.get(driver.getCurrentUrl());
+	      //using javascript executor
+JavascriptExecutor executor = (JavascriptExecutor) driver;
+executor.executeScript("location.reload()");
+	      //using robot class
+Robot robot = new Robot();
+robot.keyPress(KeyEvent.VK_F5);
+robot.keyRelease(KeyEvent.VK_F5);
+
+Diff ways to maximize a browser:
+--------------------------------
+we can maximize a browser using
+Maximize()
+use of dimension(selenium) and window.setsize()
+ChromeOptions
+
+//using chrome options
+ChromeOptions options = new ChromeOptions();
+options.addArguments("--start-maximized");
+WebDriver driver = new ChromeDriver(options);
+driver.navigate().to("http://www.google.co.in");
+	      //using maximize
+driver.manage().window().maximize();
+          //using dimensions
+Dimension dimension = new Dimension(1440,900);
+driver.manage().window().setSize(dimension);
+	}
+
+Diff bet sleep and set speed:
+-----------------------------
+thread.sleep will wait only for the particular operation where it is defined
+Thread.sleep(1000);
+
+set speed will wait for a particular time for all the operations mentioned
+this method got deprecated
+selenium.setSpeed(1000);
+
+launching a browser without system.setproperty:
+-----------------------------------------------
+add the chromedriver path in environment variables and restart the system
+run the program without system.setproperty()
+
+Handling authentication:
+------------------------
+we cannot inspect the authentication popup. As a result we will not be able to sendkeys also
+for this we can send credentials via url by
+http://username:password@url.com
+
+also we can do this by tools like sikuli,autoit but it is a time consuming process
+
+Print the google suggestions for given search term:
+---------------------------------------------------
+we need to create an xpath for a list and store it in list of webelements and using for each loop we can print the text
+List<WebElement> search = driver.findElements(By.xpath("//ul[@role='listbox']//following::li"));
+	      for (WebElement webElement : search) {
+			System.out.println(webElement.getText());
+
+click a google suggestion based on position:
+--------------------------------------------
+int position=0;
+	      for (WebElement webElement : search) {
+			System.out.println(webElement.getText());
+			position++;
+			
+			if(position==2) {
+				webElement.click();
+				break;
+}
+}
+click a google suggestion based on text:
+----------------------------------------
+List<WebElement>
+for (WebElement webElement : search) {
+			System.out.println(webElement.getText());
+			if(webElement.getText().contains("weather")) {
+				webElement.click();
+                                break;
+}
+}
+
+Print the google search result url:
+-----------------------------------
+all links:
+----------
+ List<WebElement> links = driver.findElements(By.xpath("//a"));
+	      for (WebElement webElement : links) {
+			System.out.println(webElement.getAttribute("href"));
+
+main links:
+-----------
+List<WebElement> mainlinks = driver.findElements(By.xpath("//*[@id='kp-wp-tab-overview']//following::h2//following::div/cite"));
+	      for (WebElement webElement2 : mainlinks) {
+			System.out.println(webElement2.getText());
+
+ways to enter search term:
+--------------------------
+//using enter key
+WebElement searchbox = driver.findElement(By.name("q"));
+searchbox.sendKeys("Dindigul"+Keys.ENTER);
+	      //using submit
+searchbox.sendKeys("Dindigul");
+searchbox.submit();
+          //using robot class
+Robot robot = new Robot();
+robot.keyPress(KeyEvent.VK_ENTER);
+robot.keyRelease(KeyEvent.VK_ENTER);
+          //using \n
+searchbox.sendKeys("Dindigul \n");
+
+switch to active element:
+-------------------------
+in this case we will not find the element for searching the term
+this can be done by pagefactory method and active element method
+active element- as soon as we open a page the cursor will automatically get placed on a particular element which will be the active element of that page
+public class search_without_findelement {
+public static WebElement q;
+	
+	public static void main(String[] args) {
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\HP\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://www.google.com");
+        //using active element
+        driver.switchTo().activeElement().sendKeys("Dindigul \n");
+        //using page factory
+        PageFactory.initElements(driver, search_without_findelement.class);
+        q.sendKeys("Dindigul \n");
+
+Rerun failed test cases:
+------------------------
+while running testng.xml file the failed test cases will be stored in test-output->testng-failed.xml
+we can rerun the failed test cases by running the testng-failed.xml file
+
+using IRetryAnalyzer Interface
+create a class and write the code and call that class in the test case
+public class Retry implements IRetryAnalyzer {
+
+int failedcount=0;
+int limit =4;
+	public boolean retry(ITestResult result) {
+		if(failedcount<limit) {
+			failedcount++;
+			return true;
+		}
+		return false;
+	}
+
+}
+in test case add this retry class to the test
+@Test(retryAnalyzer = Retry.class)
+	public void test1() {
+		System.out.println("1");
+	}
+
+using IAnnotationTransformer interface and IRetryAnalyzer:
+---------------------------------------------------------
+create transformer class with retry analyzer and use this transformer class as a listener in xml file
+public class Transformer implements IAnnotationTransformer{
+
+	@Override
+	public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
+		annotation.setRetryAnalyzer(Retry.class);
+		
+	}
+
+}
+
+<listeners>
+<listener class-name ="Selenium_Imp_concepts.Transformer">
+</listener>
+</listeners> 
+
+Scrolling a web page:
+---------------------
+we have to use javascript executor for scrolling a page
+Javascript function to scroll down:
+window.scrollBy(x,y)
+        or
+window.scroll(x,y)
+
+Scroll up:
+window.scroll(x,-y)
+
+scrolling to bottom of a page:
+window.scrollTo(0,document.body.scrollHeight)
+
+scrolling to top of a page:
+window.scrollTo(0,0)
+
+scroll to a particular position where an element is present:
+("arguments[0].scrollIntoView(true);",element)
+
+using robot class:
+Robot robot = new Robot();
+robot.keypress(KeyEvent.VK_PAGE_DOWN);
+robot.keyrelease(KeyEvent.VK_PAGE_DOWN);
+
+verify text is underlined or not:
+---------------------------------
+WebElement tamil = driver.findElement(By.xpath("//*[@id=\"SIvCob\"]/a[5]"));
+String before_hovering = tamil.getCssValue("text-decoration");
+System.out.println(before_hovering);
+        //hovering an element using actions class
+Actions actions = new Actions(driver);
+actions.moveToElement(tamil);
+actions.build().perform();
+        //checking whether the element is underlined or not
+String after_hovering = tamil.getCssValue("text-decoration");
+System.out.println(after_hovering);
+	}
+
+Assert vs verify:
+-----------------
+if assert statement got failed it will not move to the next step
+assert belongs to hard assertion
+Assert.assertEquals(true, false);
+
+verify only verifies the particular condition and moves to the next step
+we dont have any separate verify method for testing
+verify belongs to soft assertion
+SoftAssert assert1 = new SoftAssert();
+System.out.println("Before Assertion");
+assert1.fail();
+System.out.println("After Assertion");
+	
+sending keys without sendkeys:
+------------------------------
+ //using javascript executor
+JavascriptExecutor executor = (JavascriptExecutor) driver;
+executor.executeScript("document.getElementsByName('q')[0].value='Dindigul'","");
+             or
+executor.executeScript("arguments[0].value='Dindigul'", searchbox);
+//using active element and robot class
+  driver.switchTo().activeElement();
+	      Robot robot = new Robot();
+	      robot.keyPress(KeyEvent.VK_D);
+	      robot.keyRelease(KeyEvent.VK_D);
+	      robot.keyPress(KeyEvent.VK_O);
+	      robot.keyRelease(KeyEvent.VK_O);
+	      robot.keyPress(KeyEvent.VK_G);
+	      robot.keyRelease(KeyEvent.VK_G);
+
+Select all the checkboxes in a page:
+------------------------------------
+store the checkbox in a list of webelements and click it
+List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox']"));
+		for (WebElement webElement : checkboxes) {
+			webElement.click();
+
+Execute a test case multiple time with testng invocation:
+---------------------------------------------------------
+ @Test(invocationCount = 5)
+	public void test() {
+		System.out.println("Priya");
+	}
+
+setting timeouts for a test case:
+---------------------------------
+if a test case is taking more execution time we can fail it by using timeout option
+@Test(timeOut = 1000)
+	public void test() throws InterruptedException {
+		Thread.sleep(2000);
+		System.out.println("Priya");
+
+Handling exceptions in testng:
+------------------------------
+if we expect some exceptions will be thrown for a test cases we can mention it in test 
+so that the test case will get passed instead of fail
+@Test(timeOut = 1000,expectedExceptions = ArrayIndexOutOfBoundsException.class)
+	public void test() throws InterruptedException {
+		Thread.sleep(2000);
+		System.out.println("Priya");
+
+always run:
+-----------
+if a particular test case is dependent on other test case which has failed 
+but we want that particular test case to run even if the other test case is failed, we go for always run method
+@Test(timeOut = 1000)
+	public void test1() throws InterruptedException {
+		Thread.sleep(2000);
+		System.out.println("1st test");
+}
+	@Test(dependsOnMethods = "test1",alwaysRun = true)
+	public void test2() {
+		System.out.println("2nd test");
+	}
+}
+
+download browser driver automatically:
+--------------------------------------
+webdriver manager will automatically download and setup the driver
+webdriver manager checks the browser version installed on your machine
+finds the matching web driver as per our browser version
+checks if the driver is already present in our system and if it is not there it downloads and sets the path in the enviromental variable
+add the webdriver dependency in pom.xml and run the cmd instead of system.setproperty
+WebDriverManager.chromdriver().setup();
+
+hit the url without using get or navigate:
+------------------------------------------
+we use javascript executor for this method
+String url = "https://www.google.com";
+	      JavascriptExecutor executor = (JavascriptExecutor) driver;
+	      executor.executeScript("window.location = \'"+url+"\'");
+
+Pagination:
+-----------
+elements to be found:
+pagination footer
+next button
+cells which we want to print
+
+Logic:
+------
+find the size of the pagination,if its zero click next button
+find the next button
+when next button is disabled,it will be the end of the page
+get the class name of next button when it is disabled
+once the next is disabled we break out of the loop
+
+ int size = driver.findElements(By.xpath("//div[@class='data-den-pagination']//button")).size();
+         System.out.println(size);
+         if(size>0) {
+        	 System.out.println("Pagination is there");
+         }else {
+        	 System.out.println("No pagination");
+         }
+         //clicking next button and once it get disabled it will stop
+         do {
+        	 WebElement next = driver.findElement(By.className("data-den-pagination-button"));
+             String classname = next.getAttribute("class");
+             if(!classname.contains("disabled")) {
+            	 next.click();
+         }else {
+        	 break;
+         }
+         }
+         while(true);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
