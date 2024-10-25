@@ -1,0 +1,91 @@
+Maven:
+------
+It is used 
+to manage dependencies
+to maintain proper structure
+to build the code
+to create documentation sites
+
+Maven download: https://maven.apache.org/download.cgi
+download and set the path in environmental variable and check for mvn -version
+
+Imp Terminologies:
+------------------
+GroupId: company name
+ArtifactId: project name
+Version: Version number
+e.g: com.google.youtube
+google-groupid, youtube-artifactid
+youtube,driver,translate,gmail,...(artifacts) which means the company's products
+
+archtype-project templates
+dependencies-dependent jars
+plugins-performs operation which cannot be handled by jars
+maven central repository-centralized database which stores all dependencies and libraries related to java
+https://mvnrepository.com/
+from here we can download all the dependencies we need for our project
+
+pom.xml:
+pom-project object model which defines the structure of the project
+
+Project structure:
+------------------
+in eclipse create new maven project and select any template if needed
+then give the group and artifact id and click on finish
+maven folder will be created with main and resources folder for java code and test and test resources folder for unit testing
+
+manage dependencies:
+--------------------
+In pom.xml give the tag <dependencies> inside that give the dependency which we want to download and close the dependencies tag
+then you will find the dependency downloaded under maven dependencies folder
+while adding some more dependencies to the existing dependency maven will check our local repository inside the .m2 folder
+if that particular dependency is not available maven will download that dependency 
+if it is available it will skip and check for other dependencies
+
+build the code:
+---------------
+Manually:
+in the main create package and class give the code 
+if we want it to be executable jar, then right click the class->export->select the class and give the destination folder and give finish
+now run the jar file which is created in local repo by double clicking it and it will perform the operations which you have written in the java class
+
+using maven:
+we need to add the maven jar plugin and copy dependency plugin in the pom.xml file which states that which main method to be used
+then go to project->maven->update project
+right click on project->run as maven build-> and in goals give package and apply and run
+we will be getting build success message in the console after some executions 
+now we can find the jar file in the path which is mentioned in the console
+now run it
+
+documentation:
+--------------
+to create a documentation right click on the project->run as maven build->in goals give site and apply and run
+now site folder will be created which contains the documentation for our project
+
+build life cycles of maven:
+---------------------------
+starts from coding,testing to deploying
+it consists of several phases
+lifecycles:
+-----------
+default- handles our project deployment
+clean- deletes all the files and handles project cleaning
+site-creates documentation for our project
+
+Phases in default lifecycle:
+----------------------------
+validate - before deploying validates the project is correct and all necessary information is available
+compile - compiles the source code of the project
+test - test the compiled source code using a suitable unit testing framework. These tests should not require the code be packaged or deployed
+package - take the compiled code and package it in its distributable format, such as a JAR.
+verify - run any checks on results of integration tests to ensure quality criteria are met
+install - install the package into the local repository, for use as a dependency in other projects locally
+deploy - done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.
+
+
+
+
+
+
+
+
