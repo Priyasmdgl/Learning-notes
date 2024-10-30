@@ -1,0 +1,65 @@
+Acceptance testing:
+-------------------
+Framework used for acceptance testing is Fitnesse
+acceptance testing takes place at the end user side
+It is similar like black box testing.
+for a valid input valid output will be received
+download fitnesse jar from fitness download and run that from that path using java -jar fitnesse-standalone.jar -p port
+
+test page- contains the test cases
+suite page- contains multiple test cases
+static page- contains some additional informations which is given by the user
+
+click on edit and give the name of the page in camel case and save it
+then click the ? mark and again save it and it will be turned into a link
+then add a test or suite page
+
+Fixtures:
+---------
+fixture is the end product of our application
+to create a fixture we need to write the coding logic with the same class name,variable name and method name which we created in fitnesse page
+
+package CalculatorTest;
+
+import fit.ColumnFixture;
+
+public class Addition extends ColumnFixture{
+  int num1;
+  int num2;
+  int result;
+public int getNum1() {
+	return num1;
+}
+public void setNum1(int num1) {
+	this.num1 = num1;
+}
+public int getNum2() {
+	return num2;
+}
+public void setNum2(int num2) {
+	this.num2 = num2;
+}
+public int getResult() {
+	return result;
+}
+public void setResult(int result) {
+	this.result = result;
+}
+  
+  public int add() {
+	  result = num1+num2;
+	  return result;
+  }
+}
+create getters and setters for the declared variables by right click on the project and select source and generate getters and setters
+
+add the fitnesse jar to the java project and extend column fixture in java class as public class Addition extends ColumnFixture
+to create a link between our code and fitnesse we should add our code path to the fitnesse
+right click on the project and select show in-> system explorer and go the bin folder and there will be the class file of our code
+copy that path and paste it in fitnesse as !path C:\Users\HP\Selenium\Fitnesse\bin
+then import the package 
+|Import|
+|CalculatorTest|
+
+We can do api testing by fitnesse
+
