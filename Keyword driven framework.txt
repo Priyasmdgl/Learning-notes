@@ -1,0 +1,98 @@
+Keyword driven development:
+----------------------------
+Focus on actions 
+We can create a separate class for our test case and mention all the actions which we need to perform in a method and call it in our test case
+e.g:
+public class Login_Page {
+	WebDriver driver;
+	
+      //open browser
+	public void openbrowser() {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+		driver = new ChromeDriver();
+	}
+    //navigate to url
+	public void url() {
+		driver.navigate().to("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
+
+calling these actions from excel file:
+--------------------------------------
+first create the action keywords class as mentioned above 
+then create a excel file containing all the actions which we need to perform and call that excel file in a separate java class as below using apache poi
+public class TestData {
+	FileInputStream excel;
+	XSSFWorkbook workbook;
+	XSSFSheet sheet;
+	XSSFCell cell;
+	
+public void Excel() throws IOException {
+	 excel = new FileInputStream("src\\test\\resources\\TestData.xlsx");
+	 workbook = new XSSFWorkbook(excel);
+	 sheet = workbook.getSheet("Sheet1");
+	
+}
+public String value(int row, int column) {
+    cell = sheet.getRow(row).getCell(column);
+	String value = cell.getStringCellValue();
+	//System.out.println(value);
+	return value;
+}
+}
+
+now call that actions keywords one by one to perform the operations as below by creating a separate class
+public class engine {
+
+	public static void main(String[] args) throws IOException {
+		TestData data = new TestData();
+		data.Excel();
+		for(int row=1;row<=5;row++) {
+			String keywords=data.value(row, 3);
+			if(keywords.equals("openbrowser")) {
+				Login_Page.openbrowser();
+			}else if (keywords.equals("url")) {
+					Login_Page.url();
+			}else if (keywords.equals("username"))	{
+				Login_Page.username();
+				}else if (keywords.equals("password")) {
+					Login_Page.password();
+			}else if (keywords.equals("login")) {
+				Login_Page.login();
+			}
+		}
+	}
+
+}
+
+in the above code we are hard coding the value 
+to directly read from the excel file and compare it with the action class we go for the below method of java reflection api
+here we store all the actions under methods and it compares the excel file and action class keywords and run till the loop completes
+public class engine {
+	Login_Page actions;
+	Method[] methods;
+	String data;
+	static	String value;
+	
+	public void get_keywords() {
+		actions= new Login_Page();
+		methods=actions.getClass().getMethods();
+	}
+	public void execute() throws Exception {
+		for(int i=0;i<methods.length;i++) {
+if(methods[i].getName().equalsIgnoreCase(value)) {
+	methods[i].invoke(actions);
+}
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		TestData data = new TestData();
+		data.Excel();
+		engine set = new engine();
+		set.get_keywords();
+		for(int row=1;row<=8;row++) {
+			 value=data.value(row, 3);
+			set.execute();
+		}
+	}
