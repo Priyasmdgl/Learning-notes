@@ -1,0 +1,293 @@
+Cucumber:
+---------
+It is a testing framework which supports behaviour driven development 
+Using cucumber we can describe the behaviour of the application using plain english in a file called feature file using gherkin
+
+Project structure:
+------------------
+create a maven project and add the below dependencies 
+
+ <!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>1.2.3</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-junit -->
+<dependency>
+    <groupId>info.cukes</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>1.2.4</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.141.59</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.10</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpcore</artifactId>
+    <version>4.3.2</version>
+</dependency>
+
+add junit library to the project
+
+Feature file: the place where we write the behaviour of our application in plain english and save it as .feature extension
+step definition: Java code where the actual implementation of the feature files are present
+Runner class: java class connecting the steps in feature file with the methods in the step definition
+
+To create a feature file right click on the project and created a folder and generate a feature file with .feature extension
+create a feature file as below
+
+Feature: To test for Google Search
+Scenario: Search for Dindigul 
+ Given user navigates to Google.com
+ When the user enters the search term "Dindigul"
+ And click on search button
+ Then the user should get the results for Dindigul
+
+then create a package for the runner class in test.java and import the annotations
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "featurefile/Opengoogle.feature", glue="stepdefinitions")
+public class Opengoogle {
+}
+ 
+now right click on the runner class and run as junit test
+here we will be getting step definition syntax in the console
+copy that and paste it in the step definitions and import given,when,then 
+write the code for all the actions needs to be performed and then run as junit test
+
+Regular expressions:
+--------------------
+integer: \\d+
+string: "([^\"]*)\" or \"(.*?)\"
+float: \\d+\\.\\d+
+
+sending data directly:
+----------------------
+ When the user enters the search term "Dindigul"
+
+@When("^the user enters the search term \"([^\"]*)\"$")
+	public void the_user_enters_the_search_term(String arg1) throws Throwable {
+	   WebElement searchbox = driver.findElement(By.name("q"));
+	   searchbox.sendKeys(arg1);
+	}
+
+
+data using data table:
+----------------------
+Given the user should go to the login page 
+When the user gives the credentials
+|Admin| admin123|    //this is the data table without header
+
+@When("^the user gives the credentials$")
+	public void the_user_gives_the_credentials(DataTable arg1) throws Throwable {
+	List<String> credentials = arg1.asList(String.class);
+	String user = credentials.get(0);
+	String pwd = credentials.get(1);
+		WebElement username = driver.findElement(By.name("username"));
+		   username.sendKeys(user);
+		   WebElement password = driver.findElement(By.name("password"));
+		   password.sendKeys(pwd);
+	}
+
+Data table with header:
+-----------------------
+here we use maps 
+
+When the user gives the credentials
+|username|password|
+|Admin| admin123| 
+
+@When("^the user gives correct credentials$")
+	public void the_user_gives_correct_credentials(DataTable arg1) throws Throwable {
+		List<Map<String, String>> credentials = arg1.asMaps(String.class, String.class);
+		String user = credentials.get(0).get("username");
+		String pwd = credentials.get(0).get("password");
+		WebElement username = driver.findElement(By.name("username"));
+		   username.sendKeys(user);
+		   WebElement password = driver.findElement(By.name("password"));
+		   password.sendKeys(pwd);
+	}
+
+
+Data table with example keyword:
+-------------------------------
+for this we use scenario outline
+we use scenario outline only while using examples 
+the reason for that is, it will execute that given,when,then everytime for each no.of rows present under examples keyword
+
+Feature: check login functionality
+Scenario Outline: user should login 
+Given the user should navigate to hrm application
+When the user gives correct credentials "<username>" and "<password>"
+And select login
+Then the user will be navigated to the dashboard page
+
+Examples:
+|username| password|
+|Admin   | admin123|
+
+
+@When("^the user gives correct credentials \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void the_user_gives_correct_credentials_and(String arg1, String arg2) throws Throwable {
+		WebElement username = driver.findElement(By.name("username"));
+		   username.sendKeys(arg1);
+		   WebElement password = driver.findElement(By.name("password"));
+		   password.sendKeys(arg2);
+	}
+
+
+Cucumber options:
+-----------------
+features- gives the location of feature file
+glue-gives the location of stepdefinitions
+dry run- checks for boolean value
+         only checks whether for each steps in feature file matches the stepdefinitions but not execute the test
+strict-checks for boolean value
+       it starts executing once strict is given as true
+       if some of the definition doesnot match it will start executing and then find the error
+but dry run will find the error before executing
+monochrome- to change the console messages into human readable format
+format- it is deprecated. instead of this we can use plugin to generate reports
+        in cucumber options we need to add plugin={"report name"}
+Tags- to run selective feature files and scenarios in it
+      tag starts with @
+      in runner class under cucumber options we need to add tags={"@tagname"}
+      tags={"~@tagname"} //this feature alone will not run
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+                 features = "featurefile", 
+                 glue ="stepdefinitions", 
+                 dryRun = true, 
+                 monochrome = true, 
+                 plugin = {"html:reports/htmlreporter", "json:reports/jsonreporter.json"}, 
+                 tags = {"@launchgoogle"}
+                )
+public class cucumberoptions {
+
+}
+
+
+Hooks:
+------
+used to set methods both before and after a test
+create a package and class and give the before and after method
+combine this hooks package in glue and run it
+
+public class mangoes_hooks {
+
+	@Before
+	public void beforetest() {
+		System.out.println("Mangoes");
+	}
+	@After
+	public void aftertest() {
+		System.out.println("buy some more mangoes");
+	}
+}
+
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "featurefile/hooks.feature", glue={"stepdefinitions", "hooks"})
+
+ordering hooks:
+---------------
+before runs in ascending order
+after runs in descending
+public class ordering_hooks {
+    @Before(order=1)
+	public void before2() {
+		System.out.println("Get permission from mother for shopping");
+	}
+	@After(order=0)
+	public void after2() {
+		System.out.println("Return home");
+	}
+	 @Before(order=0)
+	public void before1() {
+		System.out.println("get amount from mother");
+	}
+	 @After(order=1)
+	public void after1(){
+		System.out.println("pay money");
+	}
+}
+
+Tagged hooks:
+-------------
+if we have multiple scenarios and if we want before and after test we can mention tags in that scenarios and call it in hooks
+@Taggedhooks
+Feature: To learn about taggedhooks
+@First
+Scenario: First scenario
+Given first step
+When second step
+Then third step
+@Second
+Scenario: Second scenario
+Given first step
+When second step
+Then third step
+
+in hooks we can call it as
+public class taggedhooks {
+	    @Before
+		public void beforescenario() {
+			System.out.println("Run before every scenario");
+		}
+	    @After
+		public void afterscenario() {
+			System.out.println("Run after every scenario");
+		}
+	    @Before("@First")
+	    public void beforefirst() {
+	    	System.out.println("Run before first scenario");
+	    }
+	    @After("@First")
+	    public void afterfirst() {
+	    	System.out.println("Run after first scenario");
+	    }
+	    @Before("@Second")
+	    public void beforesecond() {
+	    	System.out.println("Run before second scenario");
+	    }
+		@After("@Second")
+	    public void aftersecond() {
+	    	System.out.println("Run after second scenario");
+	    }
+
+Background:
+-----------
+to represent a collective list of preconditions for all the scenarios
+background is used to set methods only before a test and multiple before tests cannot be set for diff scenarios
+but hooks is used to set methods before and after a test and also multiple before and after tests can be set for diff scenarios
+there should be only one background defined in a feature file
+
+@background
+Feature: to learn about background in cucumber
+Background: School education
+Given the student have completed higher secondary education
+Scenario: Medicine
+Given the student applied for medical seat
+When the student clears the entrance exam
+Then the student can join the medical course
+Scenario: Engineering
+Given the student applied for engineering seat
+When the student have good cutoff for engineering
+Then the student can join the engineering course
+
+run the runner class and get the step definitions and add it and run the runner class
+
+if we have both background and hooks, hooks will run first then background and then scenarios
