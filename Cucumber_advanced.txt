@@ -1,0 +1,133 @@
+create a maven project and add the below dependencies
+
+ <dependencies>
+   <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>3.141.59</version>
+</dependency>
+
+ <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-java</artifactId>
+    <version>6.10.4</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>6.10.4</version>
+    <scope>test</scope>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.10</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-gherkin -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-gherkin</artifactId>
+    <version>6.10.4</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.14.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.14.1</version>
+</dependency>
+
+  </dependencies>
+
+to convert a project into cucumber project 
+right click on the project->configure->convert to cucumber project
+
+to get stepdefinitions we can create a runner class and run it and get steps
+    or
+right click on feature file and run as cucumber feature
+
+Config properties:
+------------------
+to store some confidential informations
+we can create a file and store all the important informations
+
+Webdriver manager:
+------------------
+install the dependency of webdriver manager incase of maven project
+so that it will automatically download the driver and set the path and run it for our test
+create a class and set the webdriver as
+private static WebDriver driver=null;
+in program set the driver which we need as 
+WebDriverManager.chromedriver().setup();
+
+Page factory implementation:
+----------------------------
+using page object model create a class for storing objects and store all the objects which you find as
+public class loginpage {
+
+	@FindBy(name = "username")
+	public static WebElement username;
+	@FindBy(name = "password")
+	public static WebElement password;
+	@FindBy(xpath = "//*[@id=\\\"app\\\"]/div[1]/div/div[1]/div/div[2]/div[2]/form/div[3]/button")
+	public static WebElement login;
+}
+
+
+now call this in stepdefinitions by calling the class name of objects as
+ loginpage.username.sendKeys("Admin");
+		   loginpage.password.sendKeys("admin123");
+		   loginpage.login.click();
+
+Design patterns:
+----------------
+to eliminate static keyword since static will consume more memory in case of long code
+we need to use getters and setters for this and create an object for that object class and call that getter setter method
+but that will not work so we go for singleton design pattern
+create instance for the object class as below and use it in stepdefinitions and page factory init elements
+private static loginpage page;
+	private loginpage() {
+		
+	}
+ public static loginpage getinstance() {
+	 if(page==null) {
+		 page = new loginpage();
+	 }
+	return page;
+
+Allure report:
+--------------
+dependency to be added is
+<!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber6-jvm -->
+<dependency>
+    <groupId>io.qameta.allure</groupId>
+    <artifactId>allure-cucumber6-jvm</artifactId>
+    <version>2.14.0</version>
+</dependency>
+
+plugin we need to mention is io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm
+Then install nodejs and allure commandline
+allure-npm insall -g allure-commandline
+after installing the allure command line go to the root of the project and execute allure serve to view the reports
+
+Web report:
+-----------
+For web report we need to add "pretty" under plugins in cucumberoptions
+and in cucumber options if we give publish=true we will get a link to see our reports in browser
