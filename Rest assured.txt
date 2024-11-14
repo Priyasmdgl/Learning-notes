@@ -1,0 +1,582 @@
+create a maven project and in src/test/java create a package and a class
+In pom.xml add the rest assured dependancy
+
+non bdd style:
+--------------
+basically we need baseuri,request specification,response
+baseuri-uri which we need to hit
+request specification-any specific conditions that we need to give to the request
+response-the response which we get on hitting the request
+
+Get request:
+------------
+public class Getrequest {
+@Test
+public void getemployees() {
+	RestAssured.baseURI="https://reqres.in/api/users?page=2";
+	RequestSpecification requestSpecification = RestAssured.given();
+	Response response = requestSpecification.request(Method.GET);
+	System.out.println(response.asPrettyString());
+	System.out.println(response.getStatusLine());
+	
+}
+}
+
+Post request:
+------------
+RequestSpecification requestSpecification = RestAssured.given().header("Content-Type","application/json").body("{\r\n"
+				+ "    \"name\": \"morpheus\",\r\n"
+				+ "    \"job\": \"leader\",\r\n"
+				+ "    \"id\": \"68\",\r\n"
+				+ "    \"createdAt\": \"2024-10-30T07:50:24.785Z\"\r\n"
+				+ "}");
+
+Put request:
+------------
+RequestSpecification requestSpecification = RestAssured.given().header("Content-Type","application/json").body("{\r\n"
+			+ "    \"name\": \"morpheus\",\r\n"
+			+ "    \"job\": \"zion resident\"\r\n"
+			+ "}");
+
+Delete request:
+---------------
+RequestSpecification requestSpecification = RestAssured.given();
+
+Get single user:
+----------------
+Response response = requestSpecification.request(Method.GET,"/api/users/2");
+
+Method chaining:
+----------------
+//method chaining by changing void to the class and return the object in set method
+public tour setPlace(String place) {
+	this.place = place;
+	return this;
+Tour.setPlace("Kerala").setModeoftravel("Car").person();
+
+BDD style:
+----------
+get request:
+------------
+public class Getrequest {
+    @Test
+	public void get() {
+		RestAssured
+                .given()
+                      .baseUri("https://reqres.in")
+                .when()
+                     .get("https://reqres.in/api/users?page=2")
+                     .getStatusLine();
+	}
+
+Post request:
+-------------
+public void post() {
+		RestAssured.given().baseUri("https://reqres.in").header("Content-Type","application/json").body("{\r\n"
+				+ "    \"name\": \"morpheus\",\r\n"
+				+ "    \"job\": \"leader\",\r\n"
+				+ "    \"id\": \"68\",\r\n"
+				+ "    \"createdAt\": \"2024-10-30T07:50:24.785Z\"\r\n"
+				+ "}").when().post("/api/users").prettyPrint();
+	}
+
+Put request:
+------------
+public void put() {
+		RestAssured.given().baseUri("https://reqres.in").header("Content-Type","application/json").body("{\r\n"
+			+ "    \"name\": \"morpheus\",\r\n"
+			+ "    \"job\": \"zion resident\"\r\n"
+			+ "}").when().put("/api/users/2").prettyPrint();
+	}
+
+Delete request:
+---------------
+public void delete() {
+		RestAssured.given().baseUri("https://reqres.in").when().delete("/api/users/2").prettyPrint();
+	}
+
+Getting body from external file:
+--------------------------------
+create a file in project level with .json extension and store the body for the request in that file
+in code call that file by below method
+public void post() {
+		File jsonfFile = new File("body.json");
+		RestAssured.given().baseUri("https://reqres.in").header("Content-Type","application/json").body(jsonfFile).when().post("/api/users").prettyPrint();
+		
+	}
+
+if we didn't give any url for the request and run it 
+restassured will automatically take the default url as localhost:8080
+and if there is any service running it will fetch that otherwise if none of the services are running, it will give connection refused error
+
+
+Serialization:
+--------------
+serialization is the process of converting a data object into a byte stream and saving the state of the object to be stored on a disk or transmitted accross a network
+It is the process of changing the format to transfer the data into the network
+for this we need map to store the objects
+public void serialization() {
+		Map<String, Object> jsonbody = new HashMap<String, Object>();
+		List<String> skills = new ArrayList<String>();
+		skills.add("Java");
+		skills.add("Python");
+		
+		jsonbody.put("name", "Raghav");
+		jsonbody.put("job", "Developer");
+		jsonbody.put("id", 100);
+		jsonbody.put("Skills", skills);
+		System.out.println(jsonbody);
+                RestAssured.given().baseUri("https://reqres.in").headers("Content-Type","application/json").body(jsonbody).when().post("/api/users").prettyPrint();
+	}
+but we wont get the result in proper json format
+so we go for some libraries like jackson or gson
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.13.3</version>
+</dependency>
+add this library in dependency and post the above method, so that we will get a valid response
+
+Deserialization:
+----------------
+process of restoring the tranferred data into its original format
+using object mapper:
+--------------------
+public class Deserialization_using_objectmapper {
+
+	String json = "{\r\n"
+			+ "  \"name\" : \"Priya\",\r\n"
+			+ "  \"job\" : \"QA\",\r\n"
+			+ "  \"id\" : \"55\",\r\n"
+			+ "  \"skills\" : [ \"Manual testing\", \"Automation testing\" ]\r\n"
+			+ "}";
+	
+	public void objectmapper() throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		Pojo pojo =  mapper.readValue(json, Pojo.class);
+		System.out.println(pojo.getName());
+		System.out.println(pojo.getJob());
+		System.out.println(pojo.getId());
+		System.out.println(pojo.getSkills());
+		
+		
+	}
+	public static void main(String[] args) throws JsonMappingException, JsonProcessingException {
+		
+      Deserialization_using_objectmapper deserialization = new Deserialization_using_objectmapper();
+      deserialization.objectmapper();
+	}
+
+Deserialization using functions:
+--------------------------------
+public class Deserialization_using_functions {
+
+	public void functions() {
+		Map<String, Object> response = RestAssured.given()
+				.baseUri("https://reqres.in")
+				.when().get("/api/users/55")
+				.then()
+				.extract()
+				.body()
+				.as(new TypeRef <Map<String,Object>>(){
+					});
+		System.out.println(response);
+		}
+	public static void main(String[] args) {
+		
+Deserialization_using_functions deserialization = new Deserialization_using_functions();
+deserialization.functions();
+	}
+
+POJO:
+-----
+Plain old java object
+the objects from UI application will be stored in a class called POJO class
+serializing a pojo:
+-------------------
+we will be using object mapper and defualt pretty printer and write value as string(your pojo class)
+this converts pojo object into a json format
+public static void main(String[] args) throws JsonProcessingException {
+		//creating object for pojo class
+		Pojo pojoex = new Pojo();
+		pojoex.setName("Priya");
+		pojoex.setJob("QA");
+		pojoex.setId("55");
+		pojoex.setSkills(Arrays.asList("Manual testing","Automation testing"));
+		System.out.println(pojoex.getName());
+		System.out.println(pojoex.getJob());
+		System.out.println(pojoex.getId());
+		System.out.println(pojoex.getSkills());
+		
+		//serializing a pojo class
+		ObjectMapper mapper = new ObjectMapper();
+	    String Json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pojoex);
+	    System.out.println(Json);
+		
+	}
+
+Serializer and deserializer:
+---------------------------
+public class serializer_deserializer {
+
+	public static void main(String[] args) throws JsonProcessingException {
+		Pojo serializer = new Pojo();
+		serializer.setName("Raghav");
+		serializer.setJob("Developer");
+		serializer.setId("25");
+		serializer.setSkills(Arrays.asList("Python","java"));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(serializer);
+		System.out.println(json);
+		
+		Pojo deserializer = mapper.readValue(json,Pojo.class);
+		System.out.println(deserializer.getName());
+		System.out.println(deserializer.getJob());
+		System.out.println(deserializer.getId());
+		System.out.println(deserializer.getSkills());
+		
+	}
+}
+
+relation bet getter,setter and serializer,deserializer:
+-------------------------------------------------------
+in both serializer and deserializer both getter and setter methods will be called
+in serializer we will be setting the values to the pojo class 
+ then object mapper will read that values from the pojo class and converts the objects into json
+in deserializer we will be calling get functions
+ we are using this get functions to retrieve the objects which are set in pojo class
+	
+JSON Schema:
+------------
+Schema is a plan or representation of an application
+Json will be in key value pair
+JSON Schema is a specification for JSON based format for defining the structure of JSON data
+JSON schema validator:
+----------------------
+Json schema validation can be done by using the below methods
+restassured with classpath
+restassured without classpath
+using networknt
+using hamcrest matcher
+using jsonpath
+
+add the below dependency in pom.xml
+<!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <version>4.3.3</version>
+</dependency>
+then create input.json and schema.json file under resources of your project
+then create a class and write the http method
+json schema validation using classpath:
+---------------------------------------
+if we have schema file in resources of our project the we can use json schemma in classpath method
+public void validation() {
+		File Json = new File("src/test/resources/input.json");
+		RestAssured
+                .given()
+                .baseUri("https://reqres.in")
+                .header("Content-Type","application/json")
+                .body(Json)
+                .when().post("/api/users")
+                .then()
+                .body(JsonSchemaValidator.matchesJsonSchema("schema.json"));
+	}
+json schema validation without using classpath:
+-----------------------------------------------
+if we dont have schema file under resouces we use the json schema without classpath method
+public void validation() {
+		File Json = new File("src/test/resources/input.json");
+		File schema = new File("src/test/resources/schema.json");
+		RestAssured
+		.given()
+		.baseUri("https://reqres.in")
+		.header("Content-Type","application/json")
+		.body(Json).when().post("/api/users")
+		.then()
+		.body(JsonSchemaValidator.matchesJsonSchema(schema));
+	}
+
+json schema validation using networknt:
+---------------------------------------
+download the below dependency
+<!-- https://mvnrepository.com/artifact/com.networknt/json-schema-validator -->
+<dependency>
+    <groupId>com.networknt</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <version>1.0.72</version>
+</dependency>
+create an object mapper,json schema factory along with the version of your schema
+then use read tree method and give your input json file in that
+use the factory object and read the schema
+validate the schema
+public void validation() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V201909);
+		File json = new File("src/test/resources/input.json");
+		InputStream schema = new FileInputStream("src/test/resources/schema.json");
+		JsonNode node = mapper.readTree(json);
+		com.networknt.schema.JsonSchema Schema = factory.getSchema(schema);
+		Set <ValidationMessage> result =	Schema.validate(node);
+	}
+
+json schema validation using hamcrest matcher:
+----------------------------------------------
+add the below dependency
+<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest -->
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest</artifactId>
+    <version>2.2</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.11.0</version>
+</dependency>
+
+public void validation() throws IOException {
+		File Json = new File("src/test/resources/input.json");
+		File schema = new File("src/test/resources/schema.json");
+	String json = FileUtils.readFileToString(Json, "UTF-8");
+		MatcherAssert.assertThat(json, JsonSchemaValidator.matchesJsonSchema(schema));
+	}
+
+Json path finder:
+-----------------
+$ = root element
+. or [''] = child element
+@ = current element
+* = wildcard(all)elements
+.. = deepscan/recursive descent
+element.[index] = element inside an array
+$.[?()] = filter expression
+$.[?(@.element=="")] //if element is well known
+functions:
+$.element.min(),max(),avg(),length(),stddev()
+$.[?(@.element=~/.*value/i)] //if part of the element is known
+                             //here i denotes ignorecase 
+
+Json path finder:
+-----------------
+<!-- https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path -->
+<dependency>
+    <groupId>com.jayway.jsonpath</groupId>
+    <artifactId>json-path</artifactId>
+    <version>2.7.0</version>
+</dependency>
+
+public class Jsonpathfinder {
+	
+	public static void json() throws IOException {
+		File json = new File("src/test/resources/bookstore.json");
+	List<Object> price = JsonPath.read(json, "$..Price");
+	for (Object object : price) {
+		System.out.println(price);
+	}
+	}
+
+	public static void main(String[] args) throws IOException {
+		json();
+
+	}
+
+to find some other path we need to again parse the file
+to parse it only one time and use it multiple times we use the below cmd
+Object parsing=	Configuration.defaultConfiguration().jsonProvider().parse(json.readAllBytes());
+
+While serializing a pojo class to reduce the lines of code we go for lombok
+add the below dependency 
+<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.34</version>
+		<scope>provided</scope>
+	</dependency>
+download that jar from lombok website
+and when installing it will get automatically added to the eclipse
+to eliminate more lines of code using lombok we can add @Getter,@Setter or @Data annotation
+
+json file comparison:
+---------------------
+incase of json root level elements can be in any order but array elements should be in the same order
+String json1 = "{\r\n"
+				+ "  \"name\" : \"Priya\",\r\n"
+				+ "  \"job\" : \"QA\",\r\n"
+				+ "  \"id\" : \"50\",\r\n"
+				+ "  \"skills\" : [ \"Manual testing\", \"Automation testing\" ]\r\n"
+				+ "}";
+		String json2 = "{\r\n"
+				+ "  \"name\" : \"Priya\",\r\n"
+				+ "  \"job\" : \"QA\",\r\n"
+				+ "  \"id\" : \"55\",\r\n"
+				+ "  \"skills\" : [ \"Manual testing\", \"Automation testing\" ]\r\n"
+				+ "}";
+		ObjectMapper mapper = new ObjectMapper();
+	JsonNode node1	= mapper.readTree(json1);
+	JsonNode node2 = mapper.readTree(json2);
+	System.out.println(node1.equals(node2));
+
+Storing url and path:
+---------------------
+In case of multiple request we need to send the url and path for all the request
+instead we can store it in requestspecifcation and call it in test using spec as below
+public class storingurl_using_requestspecification {
+
+	RequestSpecification specification;
+	@BeforeTest
+	public void specification() {
+		specification = RestAssured.given().baseUri("https://reqres.in").basePath("/api/users");
+		
+	}
+	@Test
+	public void get() {
+		RestAssured
+		.given()
+		   .spec(specification)
+		.when()
+		   .get("/?page=2").prettyPrint();
+	}
+
+to use that defined specification instead of calling it in testcase using spec we can define it by 
+public void specification() {
+		specification = RestAssured.given().baseUri("https://reqres.in").basePath("/api/users");
+		RestAssured.requestSpecification= specification;
+	}
+
+We can also use requestspec builder
+public static void main(String[] args) {
+		RequestSpecBuilder builder = new RequestSpecBuilder();
+		RequestSpecification specification = builder.setBaseUri("https://reqres.in").setBasePath("/api/users").build();
+		RestAssured
+		.given()
+		 .spec(specification)
+		.when()
+		   .get("/2").prettyPrint();
+	}
+	
+Basic auth:
+-----------
+public void basicauth() {
+		RestAssured.given().baseUri("https://postman-echo.com/").auth().basic("postman", "password").when().get("basic-auth").prettyPrint();
+		
+	}
+
+API key:
+--------
+public void apikey() {
+		RestAssured.given().baseUri("https://api.openweathermap.org/data/2.5/weather")
+		.queryParam("q", "Chennai")
+		.queryParam("appid", "0188faf0c21f12091deb6a4bdba787f0")
+		.when().get().prettyPrint();
+	}
+
+Bearer token:
+-------------
+public void bearertoken() {
+		RestAssured.given().baseUri("https://github.com/Priyasmdgl?tab=repositories")
+		.header("Authorization", "Bearer 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")
+		.when().get().prettyPrint();
+	}
+
+Oauth2.0:
+---------
+public void oauth() {
+		RestAssured.given().baseUri("https://api.github.com/user/repos")
+		.auth().oauth2("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")
+		.when().get().prettyPrint();
+	}
+
+Jackson serialization annotations:
+----------------------------------
+@JsonAnyGetter:
+if you dont want to print your method which is mentioned in pojo during serialization
+we can use @JsonAnyGetter annotation before getter method
+so that we will not see the method name which is mentioned in pojo class in the ouput 
+
+@JsonGetter:
+if we want to change the name of the key in json we can mention the value using jsongetter annotation before the getter method
+@JsonGetter(value = "employeename")
+
+@JsonPropertyOrder:
+to display the objects in specific order we use @JsonPropertyOrder before the class
+@JsonPropertyOrder({"id","name"})
+if we want in alphabetical order we can use @JsonPropertyOrder(alphabetic=true)
+
+@JsonRawValue:
+it is used to print only the value and not along with the datatype
+should be used before the object
+@JsonRawValue
+private String name;
+
+@JsonValue:
+it only prints the specific objects which we have mentioned using @JsonValue above the object instead of all the objects in the pojo class
+@JsonValue
+public String getName() {
+return name;
+
+@Jsonrootname:
+to map any root value to the json we can use this annotation
+declare it in pojo and using object mapper enable it
+@JsonRootName(value = "employees")
+public class Jsonrootname_pojo {
+}
+ObjectMapper mapper = new ObjectMapper();
+//mapping root value to the json
+mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(serializer);
+System.out.println(json);
+
+Jackson deserializtion annotations:
+-----------------------------------
+@JsonAnySetter:
+to omit the method or key mentioned in pojo class we can use this annotation
+
+@JsonSetter:
+to rename the method or object
+
+@JsonCreator:
+if we use constructor instead of setters we cannot use @JsonSetter annotation
+in this case we can use @JsonCreator annotation above the constructor along with @JsonProperty or @JsonSetter near the arguments as below
+@JsonCreator
+	//constructor instead of setter method
+	public Jsoncreator_pojo(@JsonProperty("employeename")String name, @JsonProperty("employeeid") int id) {
+		this.name=name;
+		this.id=id;
+	}
+
+@JsonAlias:
+we can set alias for the object and use any one of that name in json
+@JsonAlias({"employeeid","ID","Id"})
+	private int id;
+
+@JsonIgnore,JsonIgnoreProperties:
+we use this to ignore some methods
+@JsonIgnoreProperties({"id","name"})
+public class Jsonignore_pojo {
+	private String name;
+	//@JsonIgnore
+	private int id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
