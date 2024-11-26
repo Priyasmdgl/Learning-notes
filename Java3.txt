@@ -1,0 +1,380 @@
+Important java programs for practice:
+
+Reverse a string:
+-----------------
+since string is immutable, we cannot reverse a string using string reverse function
+we can reverse it only using stringbuffer and stringbuilder
+	//string reverse using string buffer
+		String given = "Priya";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(given);
+		System.out.println(buffer.reverse());
+
+	//using string builder
+		StringBuilder builder = new StringBuilder("Raghav");
+		System.out.println(builder.reverse());
+
+	//own logic
+		String name = "Jayanthi";
+		char[] array = name.toCharArray();
+		String reversed ="";
+		for(int i=array.length-1;i>=0;i--) {
+			reversed = reversed+array[i];
+		}
+		System.out.println(reversed);
+
+        //using collections
+		String name2 = "Priya";
+		char[] char_array = name2.toCharArray();
+		List<Character> list = new ArrayList<Character>();
+		for (Character character : char_array) {
+			list.add(character);
+		}
+		Collections.reverse(list);
+		for (Character character : list) {
+			System.out.println(character);
+		}
+
+Reverse a number:
+-----------------
+int given =0;
+		int reversed = 0;
+		System.out.println("Enter the number:");
+		Scanner scanner = new Scanner(System.in);
+		given = scanner.nextInt();
+		while(given!=0) {
+			reversed = reversed*10;
+			reversed = reversed+given%10;
+			given = given/10;
+		}
+		
+      System.out.println(reversed);
+
+Reverse a word:
+---------------
+String given = "Hello I am Priya";
+		String reversed = "";
+		String[] temp = given.split(" ");
+		System.out.println(temp.length);
+		System.out.println(temp[0]);
+		System.out.println(temp[1]);
+		System.out.println(temp[2]);
+		System.out.println(temp[3]);
+		for(int i=temp.length-1;i>=0;i--) {
+			reversed = reversed+temp[i]+" ";
+		}
+		System.out.println(reversed);
+
+Swap two numbers:
+-----------------
+        //using third variable
+		int a=50;
+		int b=90;
+		System.out.println("Before swapping");
+		System.out.println("a:" +a +"b:" +b);
+		int temp=a;
+		a=b;
+		b=temp;
+		System.out.println("After swapping");
+		System.out.println("a:" +a + "b:" +b);
+
+	//without using third variable
+		int first = 5;
+		int second = 10;
+		System.out.println("Before swapping");
+		System.out.println("first:" +first +"second:" +second);
+		//using add,sub
+		first = first-second;
+		second = first+second;
+		first = second-first;
+
+		//using mul,div
+		first = first*second;
+		second = first/second;
+		first= first/second;
+		System.out.println("After swapping");
+		System.out.println("first:" +first + "second:" +second);
+
+
+Triangle pattern:
+-----------------
+//printing *
+	Scanner scanner = new Scanner(System.in);
+	System.out.println("Enter the number of lines");
+	int num_of_lines = scanner.nextInt();
+	int row,col=0;
+	for(row=0;row<num_of_lines;row++) {
+		for(col=0;col<=row;col++) {
+			System.out.print("* ");
+		}
+		System.out.println();
+	}
+//printing numbers
+	Scanner scanner2 = new Scanner(System.in);
+	System.out.println("Enter the number");
+	 int limit = scanner2.nextInt();
+	 int startingnumber=1;
+	 int rows,column;
+	 for(rows=0;rows<limit;rows++) {
+		 for(column=0;column<=rows;column++) {
+			 System.out.print(startingnumber+" ");
+			 startingnumber++;
+		 }
+		 System.out.println();
+
+Length of the string without length method:
+-------------------------------------------
+//using length method
+		String name = "Priya";
+		System.out.println(name.length());
+//without using length method
+		String given = "Venkateshwari";
+		char[] array = given.toCharArray();
+		int length = 0;
+		for (char c : array) {
+			length++;
+		}
+        System.out.println(length);
+
+smallest number in an array:
+----------------------------
+int given[] = {5,3,1,2,4};
+		int smallest = Integer.MAX_VALUE;
+		for(int i=0;i<given.length;i++) {
+			if(given[i]<smallest) {
+				smallest=given[i];
+			}
+		}
+       System.out.println(smallest);
+
+ //using arrays
+       Arrays.sort(given);
+       System.out.println(given[0]);
+
+//using collections
+       List<Integer> list = Arrays.asList(given);
+       Collections.sort(list);
+       int smallno = list.get(0);
+       System.out.println(smallno);
+
+Element present in an array or not:
+-----------------------------------
+int given[] = {1,3,5,2,4};
+		int num = 5;
+		boolean found = false;
+		for(int i=0;i<given.length;i++) {
+			if(given[i]==num) {
+				found = true;
+				break;
+			}
+		}if(found) {
+			System.out.println("Number is present");
+		}else {
+			System.out.println("Number is not present");
+		}
+
+Boolean result = IntStream.of(given).anyMatch(element->element == num);
+		if(found) {
+			System.out.println("Present");
+		}else {
+			System.out.println("Not present");
+		}
+
+Find the position of an alphabet:
+---------------------------------
+Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the value");
+		char given = scanner.next().charAt(0);
+		given = Character.toLowerCase(given);
+		int ascii = (int)given;
+		System.out.println(ascii);
+		int position = ascii-96;
+		System.out.println(position);
+
+Occurence of a character in a string:
+-------------------------------------
+String given = "Venkateshwari";
+		char find = 'a';
+		int occurence = 0;
+		given = given.toLowerCase();
+		for(int i=0;i<given.length();i++) {
+			if(given.charAt(i)==find) {
+				occurence++;
+			}
+		}
+         System.out.println(occurence);
+	}
+
+Replace vowels with special character:
+--------------------------------------
+String given = "Java course";
+		//using iteration
+		char[] array = given.toCharArray();
+		for(int i=0;i<given.length();i++) {
+		if(given.charAt(i)=='A' || given.charAt(i)=='E' || given.charAt(i)=='I' || given.charAt(i)=='O' ||
+				given.charAt(i)=='U' || given.charAt(i)=='a' || given.charAt(i)=='e' || given.charAt(i)=='i' || given.charAt(i)=='o' ||
+				given.charAt(i)=='u')
+			array[i] = '*';			
+		}
+        for(int i=0;i<given.length();i++) {
+        	System.out.print(array[i]);
+        }
+        //using regular expression
+        String replace = given.replaceAll("[AEIOUaeiou]", "*");
+        System.out.println(replace);
+        //for $ we should specify with \\$
+        String result = given.replaceAll("[AEIOUaeiou]", "\\$");
+        System.out.println(result);
+
+Removing leading and trailing spaces:
+-------------------------------------
+ //using trim
+		String given = " Hello World !! ";
+		System.out.println(given.trim());
+//using strip
+		System.out.println(given.strip());
+		System.out.println(given.stripLeading());
+		System.out.println(given.stripTrailing());
+//using regex
+		System.out.println(given.replaceAll("^[ \t]+|[ \t]+$", ""));
+		//removing leading space
+		System.out.println(given.replaceAll("^[ \t]", ""));
+		//removing trailing space
+		System.out.println(given.replaceAll("[ \t]+$", ""));
+
+Finding the no.of vowels:
+-------------------------
+String given = "Selenium";
+		int vowels = 0;
+		given = given.toLowerCase();
+		for(int i=0;i<given.length();i++) {
+			if(given.charAt(i)=='a'||given.charAt(i)=='e'||given.charAt(i)=='i'||given.charAt(i)=='o'||given.charAt(i)=='u') {
+				vowels++;
+			}
+		}
+         System.out.println(vowels);
+	}
+
+Extracting numbers from a string and add them:
+----------------------------------------------
+String given = "Priya123";
+		int num = 0;
+		for(int i=0;i<given.length();i++) {
+			char character = given.charAt(i);
+			if(Character.isDigit(character)) {
+				num = num+Character.getNumericValue(character);
+			}
+		}
+        System.out.println(num);
+
+Find the missing alphabet in a given string:
+-------------------------------------------
+String given = "abcd";
+		given = given.toLowerCase();
+		given = given.replaceAll(" ", "");
+		String[] givenarray = given.split("");
+		String[] alphabets = "abcdefghijklmnopqrstuvwxyz".split("");
+		HashSet<String> set1 = new HashSet<String>(Arrays.asList(givenarray));
+		HashSet<String> set2 = new HashSet<String>(Arrays.asList(alphabets));
+		set2.removeAll(set1);
+		System.out.println(set2);
+
+Case conversion:
+----------------
+//upper to lowercase
+		String given = "PRIYA VENKATESHWARI";
+		char[] array = given.toCharArray();
+		for(int i=0;i<given.length();i++) {
+			if(array[i]>=65 && array[i]<=90) {
+				array[i] = (char) (array[i]+32);
+			}
+		}
+          for(int i=0;i<given.length();i++) {
+        	  System.out.print(array[i]);
+          }
+          //lower to uppercase
+          String given1 = "jayanthi";
+          char[] array1 = given1.toCharArray();
+          for(int i=0;i<given1.length();i++) {
+        	  if(array1[i]>=97 && array1[i]<=122) {
+        		  array1[i] = (char) (array1[i]-32);
+        	  }
+          }
+          for(int i=0;i<given1.length();i++) {
+        	  System.out.print(array1[i]);
+          }
+
+
+smallest and biggest word in a given sentence:
+----------------------------------------------
+String sent = "Automation With ArulPrasath ";
+		
+		String[] splitted = sent.split("\\s");
+		
+		String smallestWord = splitted[0];
+		String largestWord = splitted[0];
+		
+		for(String word : splitted) {
+			if(word.length()<smallestWord.length()) {
+				smallestWord = word;
+			}
+			if(word.length()>largestWord.length()) {
+				largestWord = word;
+			}
+				
+		}
+		
+		System.out.println("Small Word is: "+smallestWord);
+		System.out.println("Largee Word is: "+largestWord);	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

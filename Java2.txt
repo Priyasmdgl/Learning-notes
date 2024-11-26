@@ -1,0 +1,208 @@
+Connecting database with java:
+------------------------------
+install xampp
+create database and table in mysql
+download JDBC connector jar for mysql from https://mvnrepository.com/artifact/mysql/mysql-connector-java
+
+start coding by creating a java project and a class in eclipse
+mention the type of db to be used
+create connection with the db by giving the db details
+create a statement and execute the query
+store and get the results from the result set
+
+//mention the type of db
+Class.forName("com.mysql.cj.jdbc.Driver");
+//create connection with the db
+Connection connection = DriverManager.getConnection("jdbc:mysql://root@localhost/employees");
+//statement
+Statement statement = connection.createStatement();
+//execute query and store it in resultset
+ResultSet result = statement.executeQuery("SELECT * From users");
+while(result.next()) {
+System.out.println("id:" +result.getString(1));
+}
+
+File writing:
+-------------
+there are 4 methods for writing a file in java
+File writer
+buffered writer
+fileoutputstream
+path
+
+File writer:
+------------
+straight forward approach and have direct interaction with files but affects performance of the system in case of large volume of files
+
+String file = "filewriting.txt";
+String content = "File writing concept in java";
+FileWriter fileWriter = new FileWriter(file);
+fileWriter.write(content);
+fileWriter.close();
+
+Buffered writer:
+----------------
+this buffered writer acts as a temporary storage and then writes into the filewriter and has better performance
+
+String file = "bufferedwriter.txt";
+String content = "Buffered writer concept in java";
+FileWriter fileWriter = new FileWriter(file);
+BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+bufferedWriter.write(content);
+bufferedWriter.close();
+
+Fileoutputstream:
+-----------------
+for writing information as it is instead of encoding or something which is different from the original information 
+e.g:images
+takes the content and stores in byte array and then writes into the file
+String file = "fileoutputstream.txt";
+String content = "Fileoutputstream concept in java";
+FileOutputStream outputStream = new FileOutputStream(file);
+byte[] writer = content.getBytes();
+outputStream.write(writer);
+outputStream.close();
+
+Path:
+-----
+for writing raw data as it is
+String location = "path.txt";
+String content = "File writing using path concept in java";
+Path path = Paths.get(location);
+Files.write(path, content.getBytes());
+
+File reading:
+-------------
+String file = "bufferedwriter.txt";
+FileReader reader = new FileReader(file);
+BufferedReader bufferedReader = new BufferedReader(reader);
+String content;
+while((content = bufferedReader.readLine())!=null) {
+System.out.println(content);
+}
+
+Property file:
+--------------
+some part of our code may vary according to the diff user. so, we can store that data in a config property file
+this property file will be written in key value structure and saved with .properties extension
+diff users can change it according to their requirement and run that code
+set all the data whichever you want in property file
+then in code read the file
+create object for properties and load the file into properties
+get the properties and store it
+config.properties:
+------------------
+browser = chrome
+driver_location = C:\\Users\\HP\\Downloads\\chromedriver-win64 (1)\\chromedriver-win64\\chromedriver.exe
+java code:
+----------
+WebDriver driver = null;
+		FileInputStream inputStream = new FileInputStream("config.properties");
+		Properties properties = new Properties();
+		properties.load(inputStream);
+		String browser = properties.getProperty("browser");
+		String driver_location = properties.getProperty("driver_location");
+		if(browser.equalsIgnoreCase("chrome")) {
+			System.setProperty("webdriver.chrome.driver", driver_location);
+			driver = new ChromeDriver();
+		}else if(browser.equalsIgnoreCase("edge")) {
+			System.setProperty("webdriver.gecko.driver", driver_location);
+			driver = new EdgeDriver();
+		}
+          driver.get("https://www.google.com/");
+
+Writing json file:
+------------------
+download the json jar file. it may be json-simple.jackson
+<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version>
+</dependency>
+
+create a json object
+add key value pairs using put() method
+if json array is needed, create object for json array then add the value to it using put method
+use any of the file writing methods to write the json file
+JSONObject object = new JSONObject();
+		object.put("id", 1);
+		object.put("name", "Priya");
+		JSONArray array = new JSONArray();
+		array.add("Java");
+		array.add("Selenium");
+		object.put("skills", array);
+		FileWriter writer = new FileWriter("Write.json");
+		writer.write(object.toJSONString());
+		writer.close();
+
+Reading a json file:
+--------------------
+create object for json parser
+read the json file using file reader
+parse the read file using parse() and store it in object 
+convert the object to json object and get the values from the parsed object using get()
+get the data and store them after typecasting
+to fetch data from json array, use iterator()
+
+JSONParser parser = new JSONParser();
+		FileReader reader = new FileReader("Write.json");
+	    Object parsed =	parser.parse(reader);
+	    JSONObject jsonobject = (JSONObject) parsed;
+	    String name = (String) jsonobject.get("name");
+	    long id = (long) jsonobject.get("id");
+	    JSONArray array = (JSONArray) jsonobject.get("skills");
+	   
+	    System.out.println("id:" +id);
+	    System.out.println("name:" +name);
+	    Iterator iterator = array.iterator();
+	    while(iterator.hasNext()) {
+	    	System.out.println("skills:" +iterator.next());
+
+
+Log4j:
+------
+it is the process of writing log messages into an external place instead of getting it from the console
+if we want some of the previous output we cannot get it through console
+for this we use logger which stores all the previous output
+for this we need log4j
+https://www.apache.org/dyn/closer.cgi/logging/log4j/1.2.17/log4j-1.2.17.zip
+3 types of logger:
+------------------
+Basic configurator:
+-------------------
+public class log4j_basicconfigurator {
+	static Logger logger = Logger.getLogger(log4j_basicconfigurator.class);
+
+	public static void main(String[] args) {
+	
+        BasicConfigurator.configure();
+        logger.debug("Debug");
+        logger.info("Info");
+        logger.warn("Warning");
+        logger.error("Error");
+        logger.fatal("Fatal");
+	}
+Property configurator:
+----------------------
+create property file for this with an extension of .properties and then generate the code
+static Logger logger = Logger.getLogger(log4j_propertyconfigurator.class);
+	public static void main(String[] args) {
+		PropertyConfigurator.configure("log4j.properties");
+		logger.debug("Debug");
+        logger.info("Info");
+        logger.warn("Warning");
+        logger.error("Error");
+        logger.fatal("Fatal");
+xml configurator:
+-----------------
+create create property file for this with an extension of .xml and then generate the code
+static Logger logger = Logger.getLogger(log4j_xmlconfigurator.class);
+	public static void main(String[] args) {
+		DOMConfigurator.configure("log4j.xml");
+
+		logger.debug("Debug");
+        logger.info("Info");
+        logger.warn("Warning");
+        logger.error("Error");
+        logger.fatal("Fatal");

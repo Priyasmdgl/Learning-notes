@@ -1,0 +1,1116 @@
+Java is an object oriented programming language
+Project: A project in Java generally refers to the entire collection of files, directories, and resources that make up a software application or system. 
+         It includes the source code files, configuration files, libraries (JARs), and other assets that are needed to build, compile, and run the application.
+Packages: collection of similar classes. 
+          first letter should start with lower case and second word first letter should start with capital letter.
+          in companies they start with company name. e.g: com.google.java
+Class: single entity which contains data and methods(functions)
+       classes are the fundamental building blocks of Java programs.
+       first letter of every word should start with capital and there should not be any spaces or underscore
+
+Method:
+-------
+A method is a block of code which only runs when it is called. 
+You can pass data into a method. 
+Methods are used to perform certain actions, and they are also known as functions.
+JVM will first search for main method
+Java class will start from main method and it is the entry point of execution
+public static void main(String[] args){
+}
+
+Datatypes:
+----------
+Primitive datatypes:
+int,char,double,float,long,byte,short,boolean
+
+Reference datatypes:
+Objects,arrays,strings
+
+Wrapper class:
+--------------
+all the primitive datatypes are get wrapped in class called wrapper class to create an object
+Integer,Character,Double,Float,Long,Byte,Short,Boolean
+
+Object:
+-------
+object is an instance of class and it is created based on class, which servers as a blueprint or template
+object creation:
+ClassName objectName = new ClassName();
+through this object we can call any of the methods whichever we have created
+public class BankAccount {
+	Long accountNumber = 1234567890l;
+	String holderName = "Priya";
+	int accountBalance = 55;
+	
+	public void getBalance() {
+		System.out.println("Balance is " +accountBalance);
+	}
+	
+    public static void main(String[] args) {
+    	//object creation
+    	//classname object = new classname();
+		BankAccount account = new BankAccount();
+		account.getBalance();
+	}
+
+Return types:
+-------------
+void- returns nothing
+public class ReturnType {
+     int amount = 500;
+     public int collectAmount() {
+			System.out.println("collected amount is " + amount);
+			return amount;
+		}
+
+	public static void main(String[] args) {
+		ReturnType returnType = new ReturnType();
+	    int returnamount = returnType.collectAmount();
+	    System.out.println("returntype amount is "+returnamount);
+	}
+
+Constructors:
+-------------
+Constructor is a special type of method used to initialize newly created objects. 
+It is called automatically when an instance of a class is created using the new keyword. 
+
+Properties of constructor:
+A constructor has the same name as the class name
+must not have a return type, not even void
+cannot be abstract,static,final,synchronized
+
+Types:
+Default
+no arguments
+parameterized
+
+Default constructor:
+--------------------
+returns the default value for the object created
+when we dont provide any constructor compiler will be providing a constructor by default
+we cannot see it with the naked eye and it will be visible in class file
+it is used to provide default values to the object like 0,null,etc depending on the type
+public class DefaultConstructor {
+         int id;
+         String name;
+	public static void main(String[] args) {
+		DefaultConstructor constructor = new DefaultConstructor();
+		System.out.println(constructor.id);
+		System.out.println(constructor.name);
+	}
+here for compiler returns 0 for numbers and null for objects
+
+No argument/non-parameterized constructor:
+------------------------------------------
+we will not be giving any parameters to the constructor
+we can write logic when object is created
+public class NoargumentConstructor {
+        int id;
+        String name;
+         NoargumentConstructor() {
+        	 //we can initialize value also here
+			id = 1;
+			name = "Priya";
+			//logic
+			System.out.println("Object is created");
+		}
+	public static void main(String[] args) {
+		NoargumentConstructor constructor = new NoargumentConstructor();
+		System.out.println(constructor.id);
+		System.out.println(constructor.name);
+
+	}
+
+Parameterized constructor:
+--------------------------
+here we can give parameters inside the constructor
+parameterized constructor allows you to initialize an object with specific values at the time of creation
+public class ParameterizedConstructor {
+          int employeeid;
+          String employeename;
+          ParameterizedConstructor(int id, String name) {
+			employeeid = id;
+			employeename = name;
+		}
+          public void employee() {
+        	  System.out.println(employeeid);
+        	  System.out.println(employeename);
+          }
+	public static void main(String[] args) {
+		ParameterizedConstructor constructor = new ParameterizedConstructor(1, "Raghav");
+	    constructor.employee();
+	    ParameterizedConstructor constructor2 = new ParameterizedConstructor(2, "Jayanthi");
+	    constructor2.employee();
+
+	}
+
+Constructor overloading:
+------------------------
+process where you define multiple constructors in a class with the same name but with different parameter lists.
+public class ConstructorOverloading {
+        String city;
+        ConstructorOverloading(){
+        	city = "Dindigul";
+        	System.out.println(city);
+        }
+        ConstructorOverloading(String place){
+        	city = place;
+        	System.out.println(city);
+        }
+	public static void main(String[] args) {
+		ConstructorOverloading overloading = new ConstructorOverloading();
+		ConstructorOverloading overloading2 = new ConstructorOverloading("Bangalore");
+
+	}
+
+Conditional statements:
+-----------------------
+conditional statements are used to perform different actions based on different conditions. 
+These statements allow you to control the flow of the program based on whether a condition is true or false
+if statement: 
+Executes a block of code only if the condition is true.
+if-else statement: 
+Executes one block of code if the condition is true, and another block if the condition is false.
+if-else if-else statement: 
+Allows multiple conditions to be tested sequentially, with an optional final else block for when none of the conditions are true.
+switch statement: 
+Checks a variable against multiple case values and executes the corresponding block of code.
+
+if-else:
+--------
+public class IfElse {
+          boolean isCupEmpty=false;
+	public static void main(String[] args) {
+		IfElse condition = new IfElse();
+		if(condition.isCupEmpty) {
+			System.out.println("Fill it");
+		}else {
+			System.out.println("Drink it");
+		}
+	}
+
+if-else-if:
+-----------
+public class IfElseIf {
+    String myfavourite = "Milkshake";
+    public void choices() {
+    	if(myfavourite.equals("Coffee")) {
+    		System.out.println("My Favourite");
+    	}else if (myfavourite.equals("Tea")) {
+			System.out.println("Not my favourite");
+		}else if (myfavourite.equals("Milk")) {
+			System.out.println("Not my favourite");
+		}else {
+			System.out.println("Sorry we have no other options");
+		}
+    }
+	public static void main(String[] args) {
+		IfElseIf condition = new IfElseIf();
+		condition.choices();
+	}
+
+Switch-case:
+------------
+public class SwitchCase {
+      Character vowel = 'p';
+      public void letters() {
+    	  switch (vowel) {
+		case 'a':
+			System.out.println("vowel");
+			break;
+		case 'e':
+			System.out.println("vowel");
+            break;
+		case 'i':
+			System.out.println("vowel");
+			break;
+		case 'o':
+			System.out.println("vowel");
+			break;
+		case 'u':
+			System.out.println("vowel");
+			break;
+		default:
+			System.out.println("not a vowel");
+			break;
+		}
+      }
+	public static void main(String[] args) {
+		SwitchCase condition = new SwitchCase();
+		condition.letters();
+
+Looping statements:
+-------------------
+we use looping when we want to perform certain operations reapeatedly
+looping statements are used to execute a block of code repeatedly as long as a specified condition is true. 
+Loops are useful when you need to perform repetitive tasks without writing the same code multiple times
+
+for loop: 
+Ideal when the number of iterations is known in advance
+it consists of initialization,condition,increment/decrement
+public static void main(String[] args) {
+		for (int count = 0; count < 25; count++) {
+			System.out.println("I can write code");
+		}
+
+while loop:
+while loop repeatedly executes a block of code as long as the given condition evaluates to true
+It first checks the condition before entering the loop body, meaning the loop might not execute at all if the condition is false from the beginning.
+hence it is an entry controlled loop
+public static void main(String[] args) {
+		int i=0;
+		while (i<5) {
+			System.out.println("I am Priya");
+			i++;
+		}
+
+do-while:
+The do-while loop is similar to the while loop, but the condition is checked after the code block has been executed. 
+This ensures that the loop is always executed at least once, even if the condition is false initially.
+hence it is called exit controlled loop
+public static void main(String[] args) {
+		int i=0;
+		do {
+			System.out.println("I am learning Java");
+			i++;
+		} while (i<5);
+
+	}
+
+Static:
+-------
+It is a keyword
+can be used with class,variable,method and block
+belongs to the whole class instead of specific instance
+means if we make a member static, we can access that member without creating any object
+
+Static method:
+we can call static method from non static method but we cannot call non static from static method
+non static method can make reference to a static method
+
+static block:
+block of code which additionally has the keyword static block
+a class can have n number of static block
+it is used for initializing the static variables
+
+public class StaticMethod {
+	//static block
+	static {
+		System.out.println("Inside static block1");
+	}
+	static {
+		System.out.println("Inside static block2");
+	}
+	//static method
+	public static void static_method() {
+		System.out.println("It is a static method, hence object is not created");
+	}
+	//non static method
+	public void non_static_method() {
+		System.out.println("Non static method");
+		static_method();
+	}
+
+	public static void main(String[] args) {
+		System.out.println("Inside Main method");
+		//calling static method
+		static_method();
+		//calling non static method
+		StaticMethod method = new StaticMethod();
+		method.non_static_method();
+       
+	}
+
+static variable:
+a variable which contains static keyword
+it is common to all the instances of the class because it is a class level varibale
+only a single copy of static variable is created and shared among all the instances of the class
+so the value from the last object will be stored 
+
+public class StaticVariable {
+     static int balance = 5000;
+     String holder;
+	public static void main(String[] args) {
+		StaticVariable variable = new StaticVariable();
+		variable.balance = 10000;
+		variable.holder = "Priya";
+		StaticVariable variable2 = new StaticVariable();
+		balance = 15000;
+		variable2.holder = "Raghav";
+		System.out.println(balance);
+        System.out.println(variable.holder);
+        System.out.println(balance);
+        System.out.println(variable2.holder);
+	}
+here the value from the final object variable2 only will be stored in static variable balance
+
+Static class:
+a class can be made static only if it is a nested class
+
+Inheritance:
+------------
+concept where one class (called a subclass or child class) can inherit fields (attributes) and methods (behavior) from another class (called a superclass or parent class). 
+This allows for code reuse and establishes a relationship between the two classes.
+Superclass (Parent Class): The class that is being inherited from.
+Subclass (Child Class): The class that inherits from the superclass.
+extends Keyword: The keyword used to create a subclass.
+parent class:
+public class ParentInheritance {
+     public void home() {
+    	 System.out.println("Having 3 BHK");
+     }
+}
+child class:
+public class ChildInheritance  extends ParentInheritance{
+
+	public static void main(String[] args) {
+		ChildInheritance inheritance = new ChildInheritance();
+		inheritance.home();
+	}
+here it is using is-a relationship
+
+Types of inheritance:
+---------------------
+single: one parent and one child class
+Multi level: one grandparent,parent,child class
+multiple: two parent and one child class
+          not supported in java. we can use interface instead of this
+Hierarchial: one parent and multiple child class
+
+Access Modifiers:
+-----------------
+modifiers and specifiers are same but in java we dont have the name specifiers
+types:
+------
+default: when no modifiers is specified java will take the default one and can be accessed only within the same class
+private: can be used only within the class in which it is declared
+protected: can be used within the same class, package,subclasses 
+public: can be accessed from anywhere
+
+Polymorphism:
+-------------
+process of performing diff actions based on the object that it is acting upon
+Types:
+------
+static/compile/early binding/overloading
+dynamic/runtime/late binding/overriding
+
+Method overloading:
+-------------------
+method name should be same,return type can be same or diff and parameters should be diff
+Method overloading occurs when a class has more than one method with the same name, but with different parameters
+happens at compile time and can be done only in the same class
+
+Method overriding:
+------------------
+there should not be any change in method,parameters and return type but only change in the implementation
+it is used in inheritance concept which uses a is-a relationship
+overriding occurs when the child class is not satisfied with the implementation from parent class
+so we can change that implementation according to our wish using overriding
+parent class:
+public class PolymorphismOverriding {
+         public void parent() {
+        	 System.out.println("Hello my child");
+         }
+         public void property() {
+        	 System.out.println("3 BHK");
+         }
+child class:
+public void property() {
+		System.out.println("4 BHK");
+	}
+	public static void main(String[] args) {
+		//parentref ref = new childref();
+		PolymorphismOverriding overriding = new OverridingChild();
+		overriding.parent();
+		overriding.property();
+
+	}
+
+Abstraction:
+------------
+it is about hiding the implementation details when other subclasses or not using it implementation
+i.e, it gives only the specification so that the subclasses can make their own implementation using that specification
+abstraction is about defining what a system does, without focusing on how it does it.
+we can do abstraction through abstract class(0-100% abstraction) or through interface(100% abstraction)
+
+Abstract class:
+--------------
+if a class is having an unimplemented method, then the method and class should be made abstract
+the abstract class may or may not have implemented methods(concrete class) along with the unimplemented methods
+we cannot create object for abstract class
+if we dont want to create object for any class, then we can make it as abstract class
+if the child does not use all the unimplemented methods of parent, it cannot create an object
+so, we should either use all methods from parent or declare that child class as abstract
+
+parent class:
+public abstract class AbstractionParent {
+	public abstract void amount();
+	public abstract void property();
+	public void abstraction() {
+		System.out.println("Abstract class");
+	}
+}
+child class:
+public class AbstractionChild extends AbstractionParent{
+	@Override
+	public void amount() {
+		System.out.println("1 crore");
+	}
+	public void property() {
+		System.out.println("4 BHK");
+	}
+
+	public static void main(String[] args) {
+		AbstractionParent parent = new AbstractionChild();
+		parent.amount();
+		parent.property();
+	}
+}
+
+Interface:
+----------
+interface can have methods and variables just like class
+in interface variables are public,static and final by default
+methods are abstract,public in default
+we cannot create object for interface and it cannot have concrete classes and can have only abstract class
+we can use interface with other classes using the keyword implements
+we can use interface with other interface using keyword extends
+interface is used for absolute abstraction and multiple inheritance
+using implements keyword we can use many interfaces but if we use extend we can use only one interface
+
+parent class:
+public interface Interface {
+
+	String title = "Employees";
+	void id();
+	void name();
+	
+}
+child class:
+public class InterfaceChild implements Interface{
+	@Override
+	public void id() {
+		System.out.println(1);	
+	}
+    @Override
+	public void name() {
+		System.out.println("Priya");
+	}
+}
+
+Encapsulation:
+--------------
+process of binding data and methods together into a single unit or a class
+
+String:
+-------
+string is an object that represents sequence of characters
+e.g: "Priya" is a string of 5 characters
+string is an immutable object which means it is constant and cannot be changed once it is created
+string class implements serializable,comparable and charsequence interfaces
+
+String creation:
+----------------
+by string literal:
+------------------
+A string can be created by directly assigning a value to a String variable. 
+This creates a string object in the string pool.if that object is already present it uses the same address so memory consumption will be less
+String name = "Priya";
+string is the child of charsequence interface
+by new keyword:
+---------------
+You can also create a String using the new keyword, 
+it creates a new string object in the heap, even if the string already exists in the pool.
+String name = new String("Priya");
+
+Immutable: 
+Once a String is created, it cannot be changed. 
+Any modification to a String results in the creation of a new String object in the heap memory
+String Pool: 
+Java maintains a string pool where string literals are stored. 
+When a string is created using a literal, Java checks the pool first to see if that string already exists. 
+If it is there, it reuses the existing object; otherwise, it creates a new string in the pool.
+
+String Methods:
+---------------
+public static void main(String[] args) {
+		//string creation
+		String name = "Priya"; //by string literal
+		String name1 = new String("Jayanthi"); //by new keyword
+		System.out.println(name);
+		System.out.println(name1);
+		//returns character at particular index
+		System.out.println(name.charAt(4));
+		//returns string length
+		System.out.println(name1.length());
+		//checks the equality of the string
+		System.out.println(name.equals("priya"));
+		//checks the equality with ignorecase
+		System.out.println(name.equalsIgnoreCase("priya"));
+		//checks if string is empty or not
+		System.out.println(name.isEmpty());
+		//checks if the value is present or not
+		System.out.println(name.contains("i"));
+                //taking a portion of the string from beginning
+		System.out.println(name.substring(1));
+		//taking a portion of the string from start to end
+		System.out.println(name1.substring(0, 3));
+		//appending the string to the given string
+		System.out.println(name.concat("Venkateshwari"));
+		//replacing the existing with the given one
+		System.out.println(name1.replace("a", "e"));
+		System.out.println(name.replace("Priya", "Venkateshwari"));
+		//find the position of a character in the string
+		System.out.println(name1.indexOf("i"));
+		System.out.println(name1.indexOf("y", 1));
+		System.out.println(name1.indexOf('J'));
+		System.out.println(name1.indexOf("thi", 0));
+		//trim will remove the spaces before and after it 
+		String name2 = " Raghav ";
+		System.out.println(name2.trim());
+		//converting the given datatype to string
+		int number = 5;
+		System.out.println(String.valueOf(number));
+		//upper to lower case
+		System.out.println(name.toLowerCase());
+		//lower to upper case
+		System.out.println(name.toUpperCase());
+		//returns a joined string with the given delimiter
+		System.out.println(String.join(".", "19","11","2024"));
+		//spliting the words
+		String words = "How,are,you?";
+		String[] spliting = words.split(",");
+				for (String string : spliting) {
+					System.out.println(string);
+				}
+	}
+
+String Buffer:
+--------------
+string buffer is an object that represents a sequence of characters
+it is a child of charsequence interface
+string buffer is a mutable object
+it is synchronised,thread-safe. i.e,multiple threads cannot access it simultaneously
+in string buffer we can only use new keyword for string creation
+StringBuffer name = new StringBuffer("Priya");
+public static void main(String[] args) {
+		//string buffer is mutable
+		StringBuffer name = new StringBuffer("Priya");
+		System.out.println(name.append("Venkateshwari"));
+		System.out.println(name);
+		//reverse
+		System.out.println(name.reverse());
+		//replace
+		System.out.println(name.replace(0, 3, "sri"));
+		//delete
+		System.out.println(name.delete(0, 3));
+		//insert
+		System.out.println(name.insert(0, "Pri"));
+		//capacity
+		System.out.println(name.capacity());
+                //finding character at particular index
+		System.out.println(name.charAt(5));
+		//finding portion of the string
+		System.out.println(name.substring(3));
+		//finding the length
+		System.out.println(name.length());
+	}
+
+String Builder:
+---------------
+string builder is an object that represents a sequence of characters
+it is a child of charsequence interface
+string buffer is a mutable object
+it is non-synchronised,not thread-safe. i.e,multiple threads can access it simultaneously
+string builder is more efficient than string buffer
+
+Exception handling:
+-------------------
+exception is an unexpected event that occurs during the execution of the program which affects the normal flow of the program
+It can be handled by exception handling
+throwable is the parent of exception and error
+Exceptions:
+checked: IO or compile time exception. we can find the error during compile time as the compiler indicates the error in red
+Unchecked: Runtime or null pointer exception. we can find the error only during run time
+Error:
+Virtual machine,assertion error, etc..
+
+in exception handling we use try-catch method
+try block:
+----------
+here we will write the code whichever causes the exception inside try block
+catch block:
+------------
+prevention code for that exception can be written in catch block
+a program can have multiple exceptions in catch block and it should have unique name and parent exception should be at the last
+if there are no exceptions then the catch block will not get executed
+Finally block:
+--------------
+this is a block of code which will get executed even if the exception occurs or not
+this contains codes like closing connection of DB,buffers,streams
+if there is no try-catch block we cannot use finally block
+finally block also can have exception
+finally block will not execute on the below conditions
+when thread is dead
+when system.exit is called
+when an unrecoverable exception occurs in finally block
+
+throw: Used to explicitly throw an exception.
+throws: Indicates which exceptions a method might throw.
+
+public static void main(String[] args) {
+		try {
+			System.out.println("Inside try block");
+			System.out.println(2/0);
+			System.out.println("After exception");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Inside catch block");
+		}
+		finally {
+			System.out.println("Inside finally block");
+		}
+
+Collection:
+-----------
+collection is an interface
+it has list, set, queue
+list- array list, linked list, stack, vector
+set- hash,linked hash, Tree
+queue- priority queue,array deque, linked list deque
+
+Arraylist:
+----------
+ArrayList is a widely used data structure in Java for storing collections of objects. 
+It is part of the Java Collections Framework and offers a variety of methods for adding, accessing, modifying, and removing elements.
+data structure is resizable and growable in nature
+if follows the execution order
+it allows duplicate values
+arraylist is not synchronised, thread safe
+arraylist is resizable,growable in nature
+this method is best suited for search operations and performs low for insertion and deletion operations
+can insert heterogeneous object if generics are not used
+default capacity-10
+
+ public void arraylist() {
+    	 List<String> arraylist = new ArrayList<String>();
+    	 //inserting data into list
+    	 arraylist.add("Jayanthi");
+    	 arraylist.add("Priya");
+    	 arraylist.add("Raghav");
+    	 System.out.println(arraylist);
+    	 //retrieving data from list
+    	 System.out.println(arraylist.get(1));
+    	 //to find the index of the particular data
+    	 System.out.println(arraylist.indexOf("Jayanthi"));
+    	 System.out.println(arraylist.lastIndexOf("Raghav"));
+    	 //if element is not present it will return -1
+    	 System.out.println(arraylist.indexOf("Venkateshwari"));
+         //copying a list to another list
+    	 List<String> arraylist2 = new ArrayList<String>();
+    	 arraylist2.addAll(arraylist);
+    	 System.out.println(arraylist2);
+    	 //clear elements from the list
+    	 arraylist2.clear();
+    	 System.out.println(arraylist2);
+    	 //remove an element
+    	 arraylist.remove("Raghav");
+    	 System.out.println(arraylist);
+    	 //null insertion
+    	 arraylist2.add(null);
+    	 System.out.println(arraylist2);
+    	 //to update a data in the list
+    	 arraylist2.set(0, "Car");
+    	 System.out.println(arraylist2);
+    	 //list is empty or not
+    	 System.out.println(arraylist2.isEmpty());
+    	 //checks the size of the array
+    	 System.out.println(arraylist.size());
+    	 //checks if an element is present
+    	 System.out.println(arraylist.contains("Jayanthi"));
+    	 //iterate elements in an array
+    	 //using for-each
+    	 for (String string : arraylist) {
+			System.out.println(string);
+		}
+    	 //using for loop
+    	 int i=0;
+    	 for (i=0;i<arraylist.size();i++) {
+    		 System.out.println(arraylist.get(i));
+    	 }
+    	 //using iterator
+    	 ListIterator<String> iterator = arraylist.listIterator();
+    		 while(iterator.hasNext()) {
+             System.out.println(iterator.next());
+    		 }
+    		 
+     }
+	public static void main(String[] args) {
+		ListArraylist arraylist = new ListArraylist();
+		arraylist.arraylist();
+
+	}
+
+Linked list:
+------------
+it is more suitable for insertion,deletion but worst for retrieval operation
+linked list is also an implementation class of list interface
+it follows insertion order and duplicate values are also allowed
+
+public void linkedlist() {
+		LinkedList<Integer> list = new LinkedList<Integer>();
+		//adding elements to the list
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		list.add(5);
+		System.out.println(list);
+		//adding an element to the first position
+		list.addFirst(0);
+		System.out.println(list);
+		//adding an element to the last position
+		list.addLast(6);
+		System.out.println(list);
+		//retrieve an element
+		System.out.println(list.get(1));
+		System.out.println(list.getFirst());
+		System.out.println(list.getLast());
+		//removing an element
+		System.out.println(list.remove(4));
+		System.out.println(list.removeFirst());
+		System.out.println(list.removeLast());
+		System.out.println(list.removeFirstOccurrence(0));
+		System.out.println(list.removeLastOccurrence(6));
+		//poll deletes the element
+		System.out.println(list.poll());
+		System.out.println(list.pollFirst());
+		System.out.println(list.pollLast());
+		//size of an element
+		System.out.println(list.size());
+		//iterating elements
+		//using for loop
+		int i=0;
+		for(i=0;i<list.size();i++) {
+			System.out.println(list);
+		}
+		//using foreach loop
+		for (Integer integer : list) {
+			System.out.println(integer);
+		}
+		//using iterator
+		Iterator<Integer> iterator = list.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.hasNext());
+		}
+
+Stack:
+------
+Stack is a data structure that follows the Last-In, First-Out (LIFO) principle. 
+This means that the last element added to the stack is the first one to be removed. 
+A stack can be visualized as a collection of elements where you "push" (add) elements to the top and "pop" (remove) elements from the top.
+public void stack() {
+		Stack<String> stack = new Stack<String>();
+		//insertion
+		stack.push("A");
+		stack.push("B");
+		stack.push("C");
+		stack.push("D");
+		stack.push("E");
+		System.out.println(stack);
+		//deletion
+		System.out.println(stack.pop());
+		System.out.println(stack);
+		//to get the top of the element
+		System.out.println(stack.peek());
+		//search for an element
+		System.out.println(stack.search("B"));
+		//is empty
+		System.out.println(stack.isEmpty());
+	}
+
+Vector:
+-------
+Vector can dynamically resize itself as elements are added or removed. 
+Vector is synchronized, which makes it thread-safe, but also generally slower than other list implementations like ArrayList or LinkedList due to the overhead of synchronization
+
+public void vector() {
+		Vector<String> vector = new Vector<String>();
+		//insertion
+		vector.add("Priya");
+		vector.add("Jayanthi");
+		System.out.println(vector);
+		//deletion
+		vector.remove("Priya");
+		System.out.println(vector);
+		//retrieving
+		System.out.println(vector.get(0));
+		//setting an element
+		System.out.println(vector.set(0, "Raghav"));
+		//size
+		System.out.println(vector.size());
+		//contains an element
+		System.out.println(vector.contains("Priya"));
+		//capacity
+		System.out.println(vector.capacity());
+	}
+
+Set:
+----
+set is one of the child interface of collection
+duplicate values are not allowed
+insertion order is not maintained
+allows heterogeneous objects if generics is not used
+implementation classes are hashset,linked hashset, treemap
+Hash set:
+---------
+hashset is an implementation class for set
+datastructure is hashtable which is actuall a hash map instance
+default capacity-16
+public void hashset() {
+		 HashSet<Integer> set = new HashSet<Integer>();
+		//insertion
+		 set.add(1);
+		 set.add(2);
+		 set.add(3);
+		 set.add(4);
+		 set.add(5);
+		 System.out.println(set);
+		 //deletion
+		 System.out.println(set.remove(2));
+		 System.out.println(set);
+		 //contains
+		 System.out.println(set.contains(5));
+		 //size
+		 System.out.println(set.size());
+		 //is empty
+		 System.out.println(set.isEmpty());
+		 //retrieving all the elements
+		 for (Integer integer : set) {
+			System.out.println(integer);
+		}
+			/*
+			 * Iterator<Integer> iterator = set.iterator(); while(iterator.hasNext()) {
+			 * System.out.println(iterator.hasNext()); }
+			 */
+		 //clear
+		 set.clear();
+		 System.out.println(set);
+	}
+
+Linked hashset:
+---------------
+Like HashSet, it does not allow duplicate elements, 
+but unlike HashSet, it maintains the insertion order of elements, meaning elements are stored in the order they were added to the set.
+public void linkedhashset() {
+		LinkedHashSet<Integer> set = new LinkedHashSet<Integer>();
+		//insertion
+		set.add(1);
+		set.add(2);
+		set.add(3);
+		set.add(4);
+		System.out.println(set);
+		//deletion
+		System.out.println(set.remove(3));
+		System.out.println(set);
+		//contains
+		System.out.println(set.contains(5));
+		//size
+		System.out.println(set.size());
+		//is empty
+		System.out.println(set.isEmpty());
+		//iterator
+		for (Integer integer : set) {
+			System.out.println(integer);
+		}
+		//clear
+		set.clear();
+		System.out.println(set);
+
+
+Tree set:
+---------
+treeset is an implementation class for sortedset,navigableset interface
+duplicate, null values are not allowed
+elements in a TreeSet are sorted in their natural order, or according to a comparator provided at the time of creation. 
+it does not guarantee any specific order if the elements are not comparable.
+data structure is binary search tree
+heterogeneous objects are not allowed
+public void treeset() {
+		TreeSet<Integer> set = new TreeSet<Integer>();
+		//insertion
+		set.add(1);
+		set.add(5);
+		set.add(2);
+		set.add(6);
+		set.add(4);
+		System.out.println(set);
+		//remove
+		System.out.println(set.remove(6));
+		System.out.println(set);
+		//contains
+		System.out.println(set.contains(4));
+		//size
+		System.out.println(set.size());
+		//first lowest element
+		System.out.println(set.first());
+		//last highest element
+		System.out.println(set.last());
+		//least element greater than or equal to the specified element
+		System.out.println(set.ceiling(5));
+		//greatest element less than or equal to the specified element
+		System.out.println(set.floor(5));
+		//the least element strictly greater than the specified element
+		System.out.println(set.higher(2));
+		//greatest element strictly less than the specified element
+		System.out.println(set.lower(2));
+		//value lesser than given value
+		System.out.println(set.headSet(4));
+		//value equal to or higher than the given value
+		System.out.println(set.tailSet(4));
+		//subset
+		System.out.println(set.subSet(2, 5));
+		//comparator which gives the nature of the sorting order
+		System.out.println(set.comparator());
+		//descending order
+		System.out.println(set.descendingSet());
+		//pollfirst retrives first element and delete it
+		System.out.println(set.pollFirst());
+		System.out.println(set);
+		//polllast retrives last element and delete it
+		System.out.println(set.pollLast());
+		System.out.println(set);
+		//clear
+		set.clear();
+		System.out.println(set);
+	}
+
+Map:
+----
+map is not the child interface of collection
+map represents data in key-value pairs
+duplicate keys are not allowed but duplicate values are allowed
+
+Hashmap:
+--------
+Hashmap is an implementation class for map
+duplicate keys are not allowed but duplicate values are allowed
+uses hashing technique to store elements
+only one null key is allowed
+it doesnot maintain order of the elements
+value of the map can only be fetched using its key
+not synchronised
+capacity is 16
+public void hashmap() {
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		//insertion
+		map.put(1, "ABC");
+		map.put(2, "DEF");
+		map.put(3, "GHI");
+		System.out.println(map);
+		//duplicate
+		Map<Integer, String> map2 = new HashMap<Integer, String>();
+				map2.putAll(map);
+				System.out.println(map2);
+	    //check if key is present
+		System.out.println(map.containsKey(1));
+		//check if value is present
+		System.out.println(map.containsValue("DEF"));
+		//get
+		System.out.println(map.get(2));
+		//size
+		System.out.println(map.size());
+		//remove
+		System.out.println(map.remove(3));
+		//returns key 
+		System.out.println(map.keySet());
+		//returns values
+		System.out.println(map.values());
+		//returns key-value pairs
+		System.out.println(map.entrySet());
+		//is empty
+		System.out.println(map.isEmpty());
+
+Linked Hashmap:
+---------------
+duplicate keys are not allowed but duplicate values are allowed
+uses hashing technique to store elements
+only one null key is allowed
+maintains order of the elements
+value of the map can only be fetched using its key
+not synchronised
+capacity is 16
+//check if key is present
+		System.out.println(map.containsKey(1));
+		//check if value is present
+		System.out.println(map.containsValue("DEF"));
+		//get
+		System.out.println(map.get(2));
+		//size
+		System.out.println(map.size());
+		//remove
+		System.out.println(map.remove(3));
+		//returns key 
+		System.out.println(map.keySet());
+		//returns values
+		System.out.println(map.values());
+		//returns key-value pairs
+		System.out.println(map.entrySet());
+		//is empty
+		System.out.println(map.isEmpty());
+		
+
+Treemap:
+--------
+null key is not allowed
+elements will be retrieved on natural order
+Map<Integer, String> map = new TreeMap<Integer, String>();
+		//insertion
+		map.put(1, "ABC");
+		map.put(2, "DEF");
+		map.put(4, "MNO");
+		map.put(3, "GHI");
+		System.out.println(map);
+		//get
+		System.out.println(map.get(2));
+		//contains key
+		System.out.println(map.containsKey(4));
+		//contains value
+		System.out.println(map.containsValue("GHI"));
+		//size
+		System.out.println(map.size());
+		//is empty
+		System.out.println(map.isEmpty());
+
+
+duplicate values:
+allowed only in list
+no duplicates in set
+key cannot be duplicated in tree but values can be duplicated
+
+Null values:
+many null values allowed only in list
+only one allowed in set,linkedset,hashmap,linked hashmap
+not allowed in treeset and treemap
+
+Order:
+maintained in list,linked hashset,linked hashmap
+not maintained in hashset and hashmap
+sorted order in treeset and treemap
+
+Hashing:
+transformation of a string of characters to a short fixed length value that represents the original string
+
+
+
+
+
+
+
+
+
+
+
+
+
