@@ -1,0 +1,565 @@
+Web application:
+it is a client server computer program that the client runs in a web browser
+common web apps includes webmail,online retail sales,online banking
+
+HTML- to design the skeleton of the web page
+CSS- applies design on the skeleton
+Javascript- applies dynamic behaviour to the web page
+
+Javascript:
+-----------
+high level interpreted programming language used to make web pages more interactive
+executed on the client machine
+case sensitive language
+adds dynamic nature to the webpages
+
+DOM:
+---
+Document Object Model
+Javascript provides default object called document object
+using the document object we can access the elements on the web page and then apply dynamic behaviour to it
+javascript cannot directly understand HTML. Hence, here comes the DOM
+when we load the web page, DOM will be created based on the HTML doc
+javascript can interact with the elements on the web page using DOM structure
+
+create a file with .html extension
+the file will be like
+<html>
+<head></head>
+<body>
+</body>
+//to interact with the webpage use javascript
+<script>
+document.get
+</script>
+</html>
+
+if we have written the script in separate file with .js extension
+in html file under script section include it as 
+<script src="filename.js">
+
+Live server extension:
+----------------------
+once we make any changes in our script this live server extension will automatically update the changes to the web page
+install live server using extensions in vscode
+then open the file with live server, it will open the web page with the ip
+now make any changes in the file and save it, it will automatically get reflected in the web page
+
+Variables:
+----------
+variables are containers for storing data
+We can create variables using let,var and const keyword
+
+Diff bet var and let:
+var is function scoped and let is block scoped
+i.e,
+in var if we use the variable anywhere and then initialize after it, it can access it
+but in let if we use the variable anywhere before initialization, we will get an error
+
+const:
+if we declare a variable with const we cannot change that variable again, it is fixed
+
+Datatype:
+---------
+type of data in which we can store variables in it
+Primitive: Number,String,Boolean,Null,Undefined
+Non primitive: object,array,function,date,regx
+in javascript, we dont need to specify the datatype of the variable. since, it will automatically assign the datatype to the variable
+
+Operator:
+---------
+a symbol which performs certain operations
+types:
+Arithmetic: + -  * / % ++ --
+Assignment: = += -+ *= /= %=
+Relational: < > <= >= != == ===
+Ternary: x<y?x:y //field before ? checks for the condition
+                   field after ? gives the x and y value based on true or false
+                   if it is true it returns the value of x
+                   if it is false it returns the value of y
+Logical: && //returns true if both variables are true
+         || //returns true if one of them is true
+         ! //returns the opposite value
+
+Conditional statements:
+-----------------------
+If
+Ifelse
+switch case
+
+Looping statements:
+-------------------
+for
+while
+do while
+
+Jumping statements:
+-------------------
+break //exit from the code if the condition is true
+continue //continue with the code by skipping that value
+
+Functions:
+----------
+block of statements which will perform a specific task
+functions are used to reuse the code- define the code once and use it many times with diff arguments
+function name(){
+}
+//add function
+function add(a,b){
+    console.log(a+b);
+}
+add(5,5);
+//return function
+function sub(a,b){
+    return(a-b);
+}
+let result = sub(20,10);
+console.log(result);
+//function with no arguments
+function greet(){
+    console.log("Hello");
+}
+greet();
+//return function with no arguments
+function greetings(){
+    return("Welcome");
+}
+console.log(greetings());
+
+Calculator function:
+---------------------
+<html>
+<head>Calculator</head>
+<br>
+<body>
+   <input id="val1"/>
+   <input id="val2"/>
+   <br>
+   <button id="addbtn">Add</button>
+   <p id="result"> </p>
+</body>
+<script src="CalFunction.js"></script>
+</html>
+
+//add function
+function add(){
+    let a=document.getElementById("val1").value;
+    let b=document.getElementById("val2").value;
+    let res=parseInt(a)+parseInt(b);
+    document.getElementById("result").innerHTML=res;
+}
+document.getElementById("addbtn").onclick=add;
+
+Objects:
+--------
+object is an entity which contains certain properties and methods
+//creating an object with properties
+let person={
+    firstname:"Priya",
+    lastname:"Venkateshwari",
+    job:"QA"
+}
+//accessing object properties
+console.log(person.firstname);
+//add a new property
+person.id=1;
+//update existing property
+person.id=5;
+//remove the property
+delete person.id;
+
+Method:
+-------
+method is a function which can be created inside an object
+let employee={
+    empname:"abc",
+    salary:55000,
+    //method creation
+    bonus: function bonusamt() {
+        return((this.salary)*10/100);
+    }
+}
+//access method from the object
+console.log(employee.bonus());
+
+Arrays:
+-------
+Arrays are used to store multiple values in a single variable
+//Array declaration
+let name1=["Jayanthi","Priya","Raghav"]; 
+//accessing an element at specific index
+console.log(name1[1]); 
+//updating an element at specific index
+name1[1]="Venkateshwari";
+//array can store variables of diff datatype
+let array=[5, 2.5, "abc", true];
+//array within object
+let person1={
+    name:"abc",
+    skills:["Java","Python"]
+}
+//object in an array
+let a=[person1,person2];
+//array is an object
+console.log(typeof name1);
+//length of an array
+console.log(name.length);
+//extracting the elements using for loop
+for(i=0;i<=name.length-1;i++){
+    console.log(name[i]);
+}
+//for each loop
+for(let a of name){
+    console.log(a);
+}
+
+Array Methods:
+--------------
+let fruits=["Mango","Pineapple","Watermelon","Papaya"];
+//tostring method
+console.log(fruits.toString()); //converts an array into string with comma separated
+//join method
+console.log(fruits.join(";")); //converts an array into string with any special character separated
+//pop
+console.log(fruits.pop()); //removes the last element from the array and prints it
+console.log(fruits);
+//push
+console.log(fruits.push("Guava")); //add new element to the array at the last and returns the length of an array
+console.log(fruits);
+//shift
+console.log(fruits.shift());//removes first element and shift other elements to the lower index
+console.log(fruits);
+//unshift
+console.log(fruits.unshift("Orange"));//adds new element to the array at first and moves other element to higher index
+console.log(fruits);
+//delete
+delete fruits[0]; //deletes an element from the array
+console.log(fruits);
+//concat
+let a=[1,2];
+let b=["a","b","c"];
+console.log(a.concat(b)); //merges a and b
+console.log(a.concat(b,fruits)); //merges three arrays
+//slice
+console.log(fruits.slice(1)); //prints the element from the given index
+//sort
+console.log(fruits.sort()); //sorts the element based on asc or alphabetical order
+let num=[5,3,8,2,1];
+console.log(num.sort());
+//reverse
+console.log(num.reverse()); //reverse an array
+
+Date object:
+------------
+let date=new Date();
+console.log(date);
+console.log(date.getDate()); //print date 1-31
+console.log(date.getMonth()); //print month 0-11
+console.log(date.getFullYear()); //print year
+console.log(date.getHours()); //print hours 0-24
+console.log(date.getMinutes()); //print minutes 0-59
+console.log(date.getSeconds()); //print seconds 0-59
+
+String Methods:
+---------------
+//string declaration
+let a="Welcome"; //method1
+let c=new String("Hello"); //method2
+//charat
+console.log(a.charAt(2)); //returns the value at index 2
+//concat
+console.log(a.concat(" All")); //concat with the string
+//replace
+a="Welcome All";
+console.log(a.replace("All","Everyone")); //replaces the string with the other
+//substring
+console.log(a.substring(0,5)); //prints from the given starting index to the ending index
+//case conversion
+console.log(a.toLowerCase()); //lowercase
+console.log(a.toUpperCase()); //uppercase
+//split
+console.log(a.split(" ")); //splits based on the delimiter mentioned
+//trim
+let b=" Hello ";
+console.log(b.trim()); //deletes the empty spaces
+
+Number Methods:
+---------------
+//number declaration
+let a=5; //method1
+let b=new Number(10); //method2
+let x=1; //integer value
+let y=2.3 //decimal value
+let z=5e2; //exponential value
+console.log(x,y,z);
+//is integer
+console.log(Number.isInteger(a)); //checks the number is integer or not
+//parseint
+let s="123";
+console.log(Number.parseInt(s)); //converts a string into number
+//parsefloat
+let f="12.55";
+console.log(Number.parseFloat(f));
+//tostring
+let n=1234;
+console.log(n.toString()); //converts a number into string
+
+class:
+------
+class is a logical entity which contains variables and methods
+class also contains constructors which will be called when you create object for the class
+//class
+class student{
+    //method with no arguments
+    details(){
+        this.id=1,
+        this.name="abc",
+        this.grade="A"
+    }
+    display(){
+        console.log(this.id,this.name,this.grade);
+    }
+}
+//object creation for the class
+let stu=new student();
+stu.details();
+stu.display();
+
+class employee{
+    //method with arguments
+    details(id,name,job){
+      this.Id=id;
+      this.Name=name;
+      this.Job=job;
+      console.log(this.Id,this.Name,this.Job);
+    }
+}
+let emp=new employee();
+emp.details(5,"XYZ","QA");
+
+Object:
+-------
+object is a physical entity and it is an instance of class
+n number of objects can be created from the class
+class student{
+}
+//object creation for the class
+let stu=new student();
+
+Constructor:
+------------
+constructor is used for initializing the variables
+when object is created, constructor will automatically be invoked. i.e, no need to call the constructor like method
+class person1{
+    //constructor with no arguments
+    constructor(){
+        this.name="Priya",
+        this.job="QA"
+        console.log(this.name,this.job);
+    }
+}
+//constructor will automatically be invoked while creating object
+let per1=new person1();
+
+class person2{
+    //constructor with arguments
+    constructor(Name,Job){
+        this.name=Name,
+        this.job=Job
+        console.log(this.name,this.job);
+    }
+}
+let per2=new person2("Jayanthi","Accountant");
+
+Static keyword:
+---------------
+when a variable is initialized and used in diff objects,
+it will consume separate memory for each objects and if we need to update the variable, it should be changed in all the objects
+hence we use the keyword static
+it is common for all the objects and allocate a dedicated memory for it and no need to create object for it, it can be accesed by using the class name
+class staticdemo{
+    static a=5; //static variable
+    b=10; //non static variable
+    //static method
+    static m1(){
+        console.log("static method");
+    }
+    //non static method
+    m2(){
+        console.log("Non static method");
+    }
+}
+//static methods and variables can be accesed directly by class name
+console.log(staticdemo.a); //variable
+staticdemo.m1(); //method
+//non static variables and methods can be accesed by object
+let demo=new staticdemo();
+console.log(demo.b);
+demo.m2();
+
+Encapsulation:
+--------------
+mechanism of binding variables and methods under a single unit either class or something
+class student{
+    constructor(){
+        let Name,Marks;
+    }
+    getname(){
+        return this.Name;
+    }
+    getmarks(){
+        return this.Marks;
+    }
+    setname(name){
+        this.Name=name;
+    }
+    setmarks(marks){
+        this.Marks=marks;
+    }
+}
+let stu=new student();
+stu.setname("abc");
+stu.setmarks(90);
+console.log(stu.getname(),stu.getmarks());
+
+here it binds the variables and methods under the class student
+
+Inheritance:
+------------
+acquiring all the properties of one class into another class using the keyword extends
+it can have
+Parent/Super/Base class and Child/Sub/Derived class
+Types:
+------
+Single- one parent and one child
+Multilevel- one parent and sub child(chain of inheritance)
+Hierarchial- one parent and multiple child
+Multiple- two parent and one child
+single inheritance
+class A{
+     a=5;
+     display(){
+        console.log(this.a);
+     }
+}
+class B extends A{
+    b=10;
+    show(){
+        console.log(this.b);
+    }
+}
+let obj= new B();
+obj.display();
+obj.show();
+
+Overriding:
+------------
+modifying the implementation method of one class in another class
+here only the implementation should be changed and name,arguments should not be changed
+class Bank{
+    interest(){
+        return 0;
+    }
+}
+class axis extends Bank{
+    interest(){
+        return 5000;
+    }
+}
+class sbi extends Bank{
+    interest(){
+        return 25000;
+    }
+}
+let s=new sbi();
+console.log(s.interest());
+let a=new axis();
+console.log(a.interest());
+
+Super keyword:
+--------------
+super represents the parent class
+using this keyword, we can call the method and constructor from parent class
+class car{
+    constructor(){
+        this.color="Red";
+    }
+    print(){
+        console.log(this.color);
+    }
+}
+class car1 extends car{
+    constructor(){
+        super();
+        this.brand="BMW";
+    }
+    display(){
+        console.log(this.brand);
+        this.print();
+    }
+}
+let c=new car1;
+c.display();
+c.print();
+
+Prototype:
+----------
+Prototype is an object that is associated with every function and object by default
+if we want to add new properties at later stage to a function/class, we can take the help of prototype
+function student(){
+    this.name="Raghav";
+    this.gender="male";
+}
+student.prototype.id=5; //using prototype we have added new variable to the function
+let s=new student();
+console.log(s.name,s.gender);
+console.log(s.id);
+let s1=new student();
+console.log(s1.name,s1.gender,s1.id);
+
+Polymorphism:
+--------------
+many forms
+ability to create a variable,function or an object that has more than one form
+class shape{
+    draw(){
+        console.log("generic shape");
+    }
+}
+class square extends shape{
+    draw(){
+        console.log("square");
+    }
+}
+class circle extends shape{
+    draw(){
+        console.log("circle");
+    }
+}
+let s=new shape();
+s.draw();
+let sq=new square();
+sq.draw();
+let c=new circle();
+c.draw();
+
+convert json data into javascript object:
+-----------------------------------------
+let data='{"employees":[' +
+'{"firstname":"Priya","lastname":"Venkateshwari"},'+
+'{"firstname":"Veera","lastname":"Raghavan"}]}';
+let JSobj=JSON.parse(data); //converts json to javascript object
+console.log(JSobj.employees);
+console.log(JSobj.employees[1].firstname);
+
+let data1='{"name": "John Doe","age": 30,"email": "john.doe@example.com","isEmployed": true,"address": {"street": "123 Main St","city": "New York","postalCode": "10001"},"phoneNumbers": [{"type": "home","number": "123-456-7890"},{"type": "work","number": "987-654-3210"}]}';
+let obj=JSON.parse(data1);
+console.log(obj.name);
+console.log(obj.address.street);
+console.log(obj.phoneNumbers[0].number);
+
+
+
+
+
+

@@ -1,0 +1,739 @@
+Playwright:
+-----------
+it is used for testing web,mobile applications and api
+Features:
+---------
+Free and open source
+supports multi-browser and multi-language
+easy setup and configuration
+used for functional, api and accessibility testing
+has built in reporters, auto wait mechanism and assertions
+parallel testing can be done
+can handle multi tab and multi windows
+can handle frames and shadow dom object
+emulates mobile devices
+
+Playwright installation
+-------------------
+1) install Nodejs
+2) install VS Code Editor
+3) Create project folder and open it in VSCode
+4) Install playwright  using terminal
+  npm init playwright@latest
+  npm playwright -v   -- return installed version of playwright.
+
+5) install playwright using vs code extension
+   go to extensions and search for playwright and install it
+   then go to view- command pallet and search for playwright and click on install playwright
+
+Run the playwright test
+-----------------------
+headless mode:
+npx playwright test
+browser mode:
+npx playwright test --headed
+run only on chrome: 
+npx playwright test HomePageTest.spec.js --project=chromium
+run in debug mode:
+npx playwright test HomePageTest.spec.js --debug
+
+HTML report
+-------------
+npx playwright show-report
+
+creating a test:
+-----------------
+Create a file in tests folder with .spec.js extension
+then install required modules from the @playwright/test folder into the created file using the below cmd
+const {test,expect}=require('@playwright/test')
+or
+import {test,expect} from '@playwright/test'
+
+test('Homepage', async({page})=>{
+
+   await page.goto('https://demoblaze.com/');
+
+})
+
+test(title, async anonymous function({page fixture})
+while calling any function using page fixture we need to put await. so that it will wait for that function to be executed
+await page.
+async makes the function asynchronous and allows the use of await inside it.
+await pauses the function until the asynchronous operation (page.goto()) completes.
+
+sample test:
+------------
+const {test, expect} = require('@playwright/test'); //installing the required modules
+
+test('Homepage', async({page})=>{
+
+   await page.goto('https://demoblaze.com/');
+
+   const title = await page.title(); //test
+   console.log('page title is:',title);
+
+   await expect(page).toHaveTitle('STORE'); //validation
+
+   await page.close();
+})
+
+Locating element:
+------------------
+click a button:
+await page.locator('id=login2').click; 
+   or
+await page.click('id=login2');
+
+type a text:
+    await page.locator('id=loginusername').fill('pavanol'); or
+    await page.fill('id=loginusername','Admin'); or
+    await page.type('id=loginusername','Admin');
+
+assertion/validating:
+    const logout = await page.locator('id=logout2');
+    await expect(logout).toBeVisible;
+    
+locating multiple web elements:
+--------------------------------
+const elements = await page.$$(locator)
+
+wait for an element:
+--------------------
+ page.waitForSelector("//div[@id='tbodyid']//div//h4//a");
+
+Built in locators:
+------------------
+page.getByAltText()-to locate an element, usually image by its text alternative
+Placeholder()-to locate an input by placeholder
+Role()-to locate by explicit and implicit accessibility attributes
+Text()- to locate by text content
+Label()- to locate by associated label text
+Title()-to locate by title attribute
+TestId()- to locate by test id attribute
+
+ await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+   //getByAltText
+    const logo = await page.getByAltText('company-branding');
+    await expect(logo).toBeVisible();
+    //getByPlaceholder
+    await page.getByPlaceholder('Username').fill('Admin');
+    await page.getByPlaceholder('Password').fill('admin123');
+    //getByRole
+    await page.getByRole('button',{type: 'submit'}).click();
+    //getByText
+    const name = await page.locator('//*[@class="oxd-userdropdown-name"]').textContent();
+    await expect(await page.getByText(name)).toBeVisible();
+    //getByLabel
+    await page.getByLabel('username').fill('admin');
+    //getByTitle
+    await expect(await page.getByTitle('Help')).toBeVisible();
+
+
+Record and play scripts:
+------------------------
+we can record and play our test using Test generator(codegen)
+npx playwright codegen
+npx playwright codegen -o tests/Record.spec.js
+this will record and copy that code into our test folder. so that we can run that test
+npx playwright codegen --target javascript //describes which language to be used
+npx playwright codegen --browser chromium //describes the browser
+npx playwright codegen --device "iPhone 13" //describes the type of device to be tested in
+npx playwright codegen --viewport-size "1250,500" //describes the size of the browser window
+if we want to find the locator of some fields we can find it out by using pick locator option in the code generator
+
+Assertions:
+-----------
+playwright includes test assertions in the form of expect function
+tohaveurl:
+ await expect(page).toHaveURL('https://demo.nopcommerce.com/register');
+tohavetitle:
+ await expect(page).toHaveTitle('nopCommerce demo store. Register');
+tobevisible:
+ await expect(await page.getByAltText('nopCommerce demo store')).toBeVisible();
+tobeenabled/disabled:
+ await expect(page.locator('id=small-searchterms')).toBeEnabled();
+ await expect(page.locator('id=small-searchterms')).toBeDisabled();
+tobechecked:
+ const checkbox=await page.locator('id=gender-male');
+    await checkbox.click();
+    await expect(checkbox).toBeChecked();
+ await expect(await page.locator('id=Newsletter')).toBeChecked();
+tohaveattribute:
+ await expect(await page.locator('id=register-button')).toHaveAttribute('type','submit');
+tohave/contain text:
+ await expect(await page.locator("//div[@class='page-title']/h1")).toHaveText('Register');
+    await expect(await page.locator("//div[@class='page-title']/h1")).toContainText('Reg');
+tohavevalue:
+ await expect(name).toHaveValue('Priya');
+tohavecount:
+ const date = await page.locator("//select[@name='DateOfBirthDay']/option");
+    await expect(date).toHaveCount(32);
+
+incase of hard assertions if that assertion got failed, next step will not get executed and will terminate the test execution
+so we go for soft assertions
+hard assertion:
+ await expect.(page.locator('id=small-searchterms')).toBeDisabled();
+soft assertion:
+ await expect.soft(page.locator('id=small-searchterms')).toBeDisabled();
+
+radiobutton/checkbox:
+--------------------
+await page.locator('id=sunday').check();
+    await expect(await page.locator('id=sunday')).toBeChecked();
+    await expect(await page.locator('id=sunday').isChecked()).toBeTruthy();
+    await expect(await page.locator('id=friday').isChecked()).toBeFalsy();
+
+multiple checkboxes:
+--------------------
+const locators=[
+        'id=sunday',
+        'id=friday',
+        'id=saturday'
+    ];
+    for(const checkbox of locators){
+          await page.locator(checkbox).check();
+    }
+
+//uncheck checkboxes:
+for(const checkbox of locators){
+    if(await page.locator(checkbox).isChecked){
+        await page.locator(checkbox).uncheck();
+    }
+   }
+
+dropdown:
+---------
+await page.locator('id=country').selectOption({label:'India'}); //by label visible text
+await page.locator('id=country').selectOption('India'); //by visible text
+await page.locator('id=country').selectOption({value:'india'}); //by value
+await page.locator('id=country').selectOption({index:1}); //by index
+
+Assertions:
+//to find the no.of options present
+    const options=await page.locator("//select[@id='country']//option");
+    await expect(options).toHaveCount(10);
+  
+    const length=await page.$$("//select[@id='country']//option");
+    console.log("number of options:",length.length);
+    await expect(length.length).toBe(10);
+
+// to find the options and contains specific option
+    const present = await page.locator("//select[@id='country']").textContent();
+    await expect(present.includes('India')).toBeTruthy();
+
+    for(const text of length){
+        const country = await text.textContent();
+        console.log(country);
+    }
+
+multiselect dropdown:
+---------------------
+await page.locator('id=colors').selectOption(['Red','Blue','Yellow']);
+
+Bootstrap dropdown:
+-------------------
+dropdown which doesnot have select tag
+const a= await page.$$("//ul[@class='multiselect-container dropdown-menu']//li//a//label");
+     for(const text of a){
+         const selection = await text.textContent();
+         if(selection.includes('HTML')||selection.includes('Java')){
+            await text.click();
+         }
+      }
+
+Autosuggest dropdown:
+---------------------
+await page.locator('id=src').fill('Delhi');
+    await page.waitForSelector("//ul[@class='sc-dnqmqq dZhbJF']//li//div//text[1]");
+    const options = await page.$$("//ul[@class='sc-dnqmqq dZhbJF']//li//div//text[1]");
+    for(const option of options){
+        const text=await option.textContent();
+        console.log(text);
+        if(text.includes('Badarpur')){
+            await option.click();
+            break;
+        }
+    }
+
+hidden dropdown:
+----------------
+in chrome dev tools, under selectorhub select the debugger and click on the dropdown which we want to inspect
+then write the xpath for the suggestions in the dropdown
+
+Alerts:
+-------
+accept an alert:
+ page.on('dialog',async dialog=>{
+        console.log(dialog.type());
+        console.log(dialog.message());
+        await page.waitForTimeout(2000);
+        await dialog.accept();
+    })
+dismiss an alert:
+ page.on('dialog',async dialog=>{
+        await dialog.dismiss();
+    })
+Prompt alert:
+page.on('dialog',async dialog=>{
+        await dialog.accept('Priya');
+    })
+
+Mouse hover:
+------------
+const mac = await page.locator("//a[text()='Mac (1)']");
+    await mac.hover();
+Rightclick:
+-----------
+const button = await page.locator('id=rightClickBtn');
+    await button.click({button:'right'});
+Doubleclick:
+-------------
+const button=await page.locator("//button[text()='Copy Text']");
+    await button.dblclick();
+
+Drag and drop:
+--------------
+const source=await page.locator('id=draggable');
+    const destination=await page.locator('id=droppable');
+//method1
+    await source.hover();
+    await page.mouse.down();
+    await destination.hover();
+    await page.mouse.up();
+//method2
+await source.dragTo(destination);
+
+Keyboard actions:
+----------------
+ await page.keyboard.press('Control+A');
+    await page.keyboard.press('Control+C');
+    await page.keyboard.down('Tab');
+    await page.keyboard.up('Tab');
+    await page.keyboard.press('Control+V');
+
+Fileupload:
+-----------
+await page.goto('https://testautomationpractice.blogspot.com/');
+    await page.locator('id=singleFileInput').click();
+//single file upload
+    await page.locator('id=singleFileInput').setInputFiles('tests/Fileupload/File1.pdf');
+//multiple file upload
+    await page.locator('id=multipleFilesInput').setInputFiles('tests/Fileupload/File1.pdf','tests/Fileupload/File2.pdf');
+//remove uploaded files
+    await page.locator('id=singleFileInput').setInputFiles([]);
+
+Frames:
+-------
+//length of the frame
+    const frames = await page.frames();
+    console.log('No.offrames',frames.length);
+//using name of the frame
+    const frame1=await page.frame('name');
+//using url of the frame
+    const frame2=await page.frame({url:'https://ui.vision/demo/webtest/frames/frame_1.html'});
+//using frame locator
+    await page.frameLocator("//frame[@src='frame_1.html']").locator("//input[@name='mytext1']")
+Nested frames:
+--------------
+ const iframe=await frame3.childFrames();
+    iframe[0].locator("//*[@id='i9']/div[3]/div").check();
+
+DatePicker:
+-----------
+//by filling 
+    await page.locator('id=datepicker').fill('01/27/2025');
+//by selecting the fields
+await page.locator('id=datepicker').click();
+    while(true){
+        const year = await page.locator("//span[@class='ui-datepicker-year']").textContent();
+        const month = await page.locator("//span[@class='ui-datepicker-month']").textContent();
+        if(year=='2025' && month=='January'){
+            break;
+        }
+        await page.locator("//span[@class='ui-icon ui-icon-circle-triangle-e']").click();
+    }
+    const date=await page.$$("//a[@class='ui-state-default']");
+    for(const dates of date){
+        const text= await dates.textContent();
+        if(text=='25'){
+            await dates.click();
+            break;
+        }
+    }
+//direct date selection
+    await page.locator("//a[@class='ui-state-default'][text()=15]").click();
+
+Table:
+------
+const table = await page.locator('id=productTable');
+//no.of columns
+    const columns = await table.locator("//thead//tr//th");
+    console.log("No.of columns:", await columns.count());
+//no.of rows
+    const rows = await table.locator("//tbody//tr");
+    console.log("No.of rows:" , await rows.count());
+//no.of pages present
+    const pages=await page.locator("//ul[@id='pagination']//li//a");
+    console.log("No.of Pages:", await pages.count());
+//pagination and print the data displayed in each page
+const pagess= await page.$$("//ul[@id='pagination']//li//a");
+    for(const page of pagess){
+        if(page<pages.count()){
+            await page.click();
+        }
+        //print all rows in all the pages
+    for(let i=0;i<await rows.count();i++){
+        const row = rows.nth(i);
+        const tds=row.locator("//td");
+        for(let j=0;j<await tds.count()-1;j++){
+            console.log(await tds.nth(j).textContent())
+        }
+    }
+    
+    }
+//select the checkbox in any row
+//declare this out of test function and call it in test function
+async function product(rows,page,name)
+{
+    const match=rows.filter({
+        has: page.locator("//td"),
+        hasText: name
+    })
+    await match.locator("//input").check();
+}
+in test function call the above function as below
+    await product(rows,page,'Smartphone');
+    await product(rows,page,'Laptop');
+    await product(rows,page,'Tablet');
+
+Hooks:
+------
+beforeEach: executed before each individual test
+afterEach: executed after each individual test
+beforeAll: executed once before any of the tests starts running
+afterAll: executed once after all the tests have run
+
+let page;
+
+test.beforeEach(async({browser})=>{
+ page=await browser.newPage();
+ await page.goto('https://demoblaze.com/');
+ //login
+})
+
+test.afterEach(async()=>{
+    //logout
+})
+
+test('hooks',async()=>{
+   //homepage validation
+})
+
+test('cart',async()=>{
+   //cartpage
+    })
+})
+
+Grouping:
+---------
+used for grouping the tests under specific group
+test.describe('Group1',()=>{
+    test('test1',async()=>{
+        console.log('This is First test');
+    })
+    test('test2',async()=>{
+        console.log('This is Second test');
+    })
+})
+
+Screenshot:
+-----------
+visible page:
+await page.screenshot({path:'tests/Screenshots/'+Date.now()+'homepage.png'});
+full page:
+await page.screenshot({path:'tests/Screenshots/'+Date.now()+'fullpage.png',fullPage:true});
+element snap:
+await page.locator("//*[@id='content']/div[2]/div[1]/div").screenshot({path:'tests/Screenshots/'+Date.now()+'element.png'});
+
+to take screenshot of all the tests
+include the below line in use tag
+screenshot:'on'
+
+Video record for our test:
+--------------------------
+to take video for our test
+include the below line in use tag
+video: 'on' or the below one as per requirement
+
+off- dont record
+on- record
+retain on failure- record failed tests
+on first retry- record only when retrying for the first time
+
+Trace viewer:
+-------------
+to trace our tests
+include the below line in use tag
+trace: 'on'
+
+run the below cmd to see the trace
+npx playwright show-trace (path of the trace)
+
+Tags:
+-----
+test('test2@tagname',async({page})=>{
+})
+
+run it by using the cmd npx playwright test name --project chromium --headed --grep"@tagname"
+for excluding some tag name --grep-invert "@tagname"
+
+Annotations:
+------------
+only- run only specific test
+test.only('test@tagname',async({page})=>{
+})
+
+skip- skips the specific test from running
+test.skip('test@tagname',async({page})=>{
+})
+
+fixme- for skipping the test which has some issue
+test('test4',async({page})=>{
+    test.fixme();
+    console.log('Test4');
+})
+
+fail- to fail a test
+test('test4',async({page})=>{
+    test.fail();  //if both exp and actual fails then only the test will get passed
+    console.log('Test4');
+    expect(1).toBe(1);
+})
+
+slow- slows the timeout for our test
+in config file under timeout, there will be a timelimit for our test
+if some test cases requires more time we can give slow annotation
+test('test7',async({page})=>{
+    test.slow();
+    await page.goto('https://testautomationpractice.blogspot.com/');
+})
+so that it waits for triple the time mentioned in config file
+
+//also we can slow by giving 
+test('test7',async({page})=>{
+    test.setTimeout(6000);
+    await page.goto('https://testautomationpractice.blogspot.com/');
+})
+
+Windows:
+--------
+//launching browser and page
+    const browser=await chromium.launch();
+    const context=await browser.newContext();
+    const page=await context.newPage();
+//handling windows
+    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+//switching to another page from the present page
+    const pagepromise=context.waitForEvent('page');
+    await page.locator("//a[text()='OrangeHRM, Inc']").click();
+    const newpage=await pagepromise;
+    await page.waitForTimeout(2000);
+    await newpage.waitForTimeout(2000);
+    await browser.close();
+
+Reports:
+--------
+list reporter:
+we can run by using the cmd
+npx playwright test --reporter=list
+//or include the following in the config file
+reporter: 'list',
+o/p be like:
+ ✓  1 [chromium] › Reports.spec.js:6:5 › page2 (2.2s)
+  ✓  2 [chromium] › Reports.spec.js:2:5 › page1 (5.0s)
+
+line reporter:
+npx playwright test --reporter=line
+o/p be like:
+  2 passed (5.8s)
+
+dot reporter:
+npx playwright test --reporter=dot
+o/p be like:
+··
+  2 passed (7.0s)
+
+html reporter:
+npx playwright test --reporter=html
+o/p be like:
+index.html will be created in playwright-report folder
+or we can run npx playwright show-report
+
+json reporter:
+npx playwright test --reporter=json
+or in config file include
+reporter:[['json',{outputFile: 'results.json'}]]
+o/p will be displayed in json format
+
+junit reporter:
+npx playwright test --reporter=junit
+or in config file include
+reporter:[['junit',{outputFile: 'results.xml'}]]
+o/p will be displayed in xml format
+
+for multiple report generation:
+include it in the config file as
+reporter:[['list'],['line'],['dot'],['html'],['junit',{outputFile: 'results.xml'}],['json',{outputFile: 'results.json'}]]
+
+Allure report:
+--------------
+install allure playwright module:
+npm i -D @playwright/test allure-playwright
+
+install allure cmd line:
+npm install -g allure-commandline --save-dev
+
+generating allure report by including it in the config file as
+reporter: ['allure-playwright',{outputFolder: 'my-allure-results'}]
+or using the cmd
+npx playwright test --reporter=allure-playwright
+
+run the required test
+
+generate allure report:
+allure generate my-allure-results -o allure-report --clean
+
+open allure report:
+allure open allure-report
+
+Retry failed test cases:
+------------------------
+Passed- no retry //test that passed on first run
+failed- retry- again failed //test that failed on first run and failed on all retries
+failed- retry- passed on retry //test that failed on first run, but passed when retried(flaky test)
+
+to retry failed test cases
+include the following in the config file
+retries:1,
+
+or in the cmd line specify
+npx playwright test --retries=3
+
+API testing:
+------------
+for api testing we need to include request fixture instead of page fixture
+test('Get request',async({request})=>{
+})
+Get request:
+-----------
+test('Get request',async({request})=>{
+    const response=await request.get('https://reqres.in/api/users?page=2');
+    console.log(await response.json());
+    await expect(response.status()).toBe(200);
+})
+Post request:
+-------------
+var userid;
+test('Get request',async({request})=>{
+const response=await request.post('https://reqres.in/api/users', {
+        data: {
+            "name": "morpheus",
+            "job": "leader"
+        },
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    console.log(await response.json());
+    await expect(response.status()).toBe(201);
+    var res=await response.json();
+    userid=res.id;
+    console.log(userid);
+})
+Put request:
+------------
+const response=await request.put('https://reqres.in/api/users/'+userid,{
+        data: {
+            "name": "morpheus",
+            "job": "zion resident"
+        },
+        headers:{
+            "Accept":"application/json"
+        }
+    });
+    console.log(await response.json());
+    await expect(response.status()).toBe(200);
+Delete request:
+---------------
+const response=await request.delete('https://reqres.in/api/users/'+userid);
+    await expect(response.status()).toBe(204);
+
+for running all api requests simultaneously it should be in serial mode instead of parallel mode.
+so include the following in config file
+fullyParallel: false,
+
+Page object model:
+------------------
+create a folder under your project for the pages and add each file for your pages with .js extension
+in the page file create the following
+
+create a class and export the class so that we can use it in our tests
+exports.LoginPage=class LoginPage{
+}
+
+in that create a constructor with page fixture and give all the locators as
+//constructor which contains all the locators
+constructor(page){
+this.page=page;
+this.loginlink='id=login2';
+this.username='id=loginusername';}
+
+then create the methods
+create method for navigating to the page as
+//method to open a page
+async loginpage(){
+        await this.page.goto('https://demoblaze.com/');
+    }
+
+then create method to perform the operation
+e.g for login
+//method to perform actions using the above locators
+async login(name,pwd){
+        await this.page.locator(this.loginlink).click();
+        await this.page.locator(this.username).fill(name);
+        await this.page.locator(this.password).fill(pwd);
+        await this.page.locator(this.login).click();
+    }
+
+now in our test file import the page class which we have created for the POM as
+import { LoginPage } from '../Pages/LoginPage'
+test('ecommerce',async({page})=>{
+    const login=new LoginPage(page); //object creation of LoginPage class
+    await login.loginpage(); //calling the loginpage method from LoginPage class
+    await login.login('pavanol','test@123'); //calling the login method from LoginPage class
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
